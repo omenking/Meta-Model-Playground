@@ -1,0 +1,6 @@
+# Local secrets and generated artifacts — do not commit.
+.env
+.venv/
+outputs/
+__pycache__/
+*.pyc
