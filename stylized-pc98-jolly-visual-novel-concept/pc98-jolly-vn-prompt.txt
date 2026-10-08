@@ -1,0 +1,7 @@
+PC-98 visual novel game screenshot, 1990s Japanese adventure game on NEC PC-9801, 640x400, 16-color limited palette with dithering, subtle CRT scanlines.
+
+Scene: night-time school courtyard under stars, 2D pixel-art background in early-90s anime style, dark blue sky, pixel clouds, school building silhouette with lit windows.
+
+Character: Jolly, Meta Muse's mascot, faithful to reference image: small chubby rounded pill-shaped yeti-like creature in warm off-white cream short fur, smooth matte cream oval face, two small solid black glossy round eyes, tiny curved closed-mouth smile, soft pink blush cheeks, no nose no ears, stubby arms and legs. Rendered as large centered PC-98-style 2D visual novel sprite, clean pixel edges with light dithering, softly lit by moonlight, holding a small glowing translucent blue-white orb.
+
+UI: authentic PC-98 visual novel HUD: thin white-bordered dark-blue gradient dialogue box across the bottom quarter, small name plate in top-left of box reading JOLLY, two lines of short dialogue text inside, small blinking down-arrow cursor at box corner, thin top status bar with pixel font text. 4:3 fullscreen game screenshot, no photo, no 3D render, no modern UI, no watermark.

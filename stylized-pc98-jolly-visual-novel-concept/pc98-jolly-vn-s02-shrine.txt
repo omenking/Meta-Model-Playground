@@ -1,0 +1,7 @@
+NEW SCENE (same rendering and UI as the anchors):
+
+SCENE: hillside shrine at dusk in falling snow. Stone lanterns glowing warm, offering hall behind, snow-laden pines, grey-blue evening sky with soft snow particles, 2D anime background art in early-90s style. Jolly as a LARGE left-side portrait, waist-up, cropped by the frame edge, a small trail of pawprints behind it in the snow, a tiny breath puff in the cold air, holding its glowing translucent blue-white orb close for warmth.
+
+UI: narration-style black dialogue box with pink trim across the bottom, NO name plate, two lines of text, pink down-triangle at bottom-right. Text: ゆきが しんしんと ふっているよ… / あしたは はれると いいね。
+
+No humans, no photo, no 3D render, no modern UI, no top status bar, no side filigree borders, no watermark.

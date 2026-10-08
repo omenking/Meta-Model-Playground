@@ -1,0 +1,7 @@
+NEW SCENE (same rendering and UI as the anchors):
+
+SCENE: summer festival food-stall street at night. Paper lanterns strung overhead, fireworks in the dark sky, glowing stalls receding down the street, 2D anime background art in early-90s style. Jolly as a LARGE left-side portrait, waist-up, cropped by the frame edge, holding its glowing translucent blue-white orb high like a lantern, delighted.
+
+UI: black dialogue box with pink trim across the bottom, small Jolly name plate top-left, two lines of text, pink down-triangle at bottom-right. A small vertical 2-choice list floats over the scene at mid-right with thin pink border: りんごあめを かう (highlighted on a pink bar with black arrow) / わたあめを かう. Dialogue text: わあ！ まつりの ひかりが いっぱいだね… / このオーブも まけてられないよ。
+
+No humans, no photo, no 3D render, no modern UI, no top status bar, no side filigree borders, no watermark.

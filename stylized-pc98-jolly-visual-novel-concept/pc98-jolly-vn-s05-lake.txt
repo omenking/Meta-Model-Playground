@@ -1,0 +1,7 @@
+NEW SCENE (same rendering and UI as the anchors):
+
+SCENE: wooden dock on a mountain lake in bright morning, the view from the golden reference's window now from outside. Morning mist on the water, village church and houses across the lake, forested mountains, sparkling sun reflections on rippling water, 2D anime background art in early-90s style. Jolly as a LARGE left-side portrait, waist-up, cropped by the frame edge, holding its glowing translucent blue-white orb up toward the sun with a small sparkle effect.
+
+UI: black dialogue box with pink trim across the bottom, small Jolly name plate top-left, two lines of text, pink down-triangle at bottom-right. Dialogue text: あさひが きらきらして まぶしいな… / きょうも いいひに なりそう！
+
+No humans, no photo, no 3D render, no modern UI, no top status bar, no side filigree borders, no watermark.

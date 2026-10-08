@@ -1,0 +1,7 @@
+NEW SCENE (same rendering and UI as the anchors):
+
+SCENE: school rooftop at sunset, emotional farewell mood. Chain-link fence crossing the foreground, glowing orange-pink clouds, school water tank and distant town silhouette, long shadows, 2D anime background art in early-90s style. Jolly as a LARGE left-side portrait beside the fence, waist-up, cropped by the frame edge, holding its translucent blue-white orb low, the orb reflecting the sunset.
+
+UI: black dialogue box with pink trim across the bottom, small Jolly name plate top-left, two lines of text, pink down-triangle at bottom-right. Dialogue text: きょうで なつやすみも おわりだね… / たのしかったね、ほんとうに。
+
+No humans, no photo, no 3D render, no modern UI, no top status bar, no side filigree borders, no watermark.

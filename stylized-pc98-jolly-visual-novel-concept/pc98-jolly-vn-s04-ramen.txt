@@ -1,0 +1,7 @@
+NEW SCENE (same rendering and UI as the anchors):
+
+SCENE: cramped ramen shop counter interior at night. Noren curtain, red paper lantern, wooden counter with chopsticks and tea cups, rising steam, menu slips on the wall, 2D anime background art in early-90s style. Jolly as a LARGE RIGHT-side portrait (facing left toward the viewer), waist-up, cropped by the frame edge, paws resting on the counter, holding a small paper meal ticket.
+
+UI: black dialogue box with pink trim across the bottom, small Jolly name plate top-left, two lines of text, pink down-triangle at bottom-right. A vertical shop menu floats over the scene at mid-left with thin pink border listing four ramen types with とんこつ highlighted on a pink bar with black arrow: しお / しょうゆ / とんこつ / みそ. Dialogue text: おなかが ぺこぺこだよ… / チャーシューめん、いっちょう！
+
+No humans, no photo, no 3D render, no modern UI, no top status bar, no side filigree borders, no watermark.

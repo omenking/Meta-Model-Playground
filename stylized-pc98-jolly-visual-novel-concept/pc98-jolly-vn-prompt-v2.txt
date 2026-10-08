@@ -1,0 +1,9 @@
+Authentic PC-98 visual novel screenshot, early-1990s Japanese adventure game, NEC PC-9801, 640x400, 16 colors, visible dithering, faint CRT scanlines, 4:3 fullscreen screenshot.
+
+LAYOUT — follow the style-reference screenshots for layout and UI only, never their characters: one LARGE character portrait, waist-up, positioned left-of-center, cropped by the frame edge and overlapping the dialogue box, facing slightly toward the viewer as if speaking to the player. Detailed 2D anime background filling the whole frame behind the portrait. Full-width dialogue box across the bottom: solid dark navy, thin light border, two lines of white Japanese dialogue text, small red down-triangle advance marker at bottom-right. Thin decorative vertical filigree borders on the left and right frame edges. No top status bar, no HUD, no inventory display, no English name plate.
+
+CHARACTER — follow the Jolly character reference sheet strictly; ignore the human girls in the style references: Jolly, small chubby rounded pill-shaped yeti-like mascot in warm off-white cream short fur, smooth matte cream oval face, two small solid black glossy round eyes, tiny curved closed-mouth smile, soft pink blush cheeks, no nose, no ears, stubby arms, holding a small glowing translucent blue-white orb up near the viewer. Render Jolly as 2D PC-98-style pixel illustration with dithering, large and close to the camera, softly lit.
+
+SCENE: quiet night-time school courtyard, dark blue starry sky, school building with warm lit windows behind, bushes and stone path, 2D anime background art in early-90s style.
+
+DIALOGUE BOX TEXT (Japanese, white pixel font, exactly two short lines, gentle bedtime tone). No photo, no 3D render, no modern UI, no watermark, no humans.

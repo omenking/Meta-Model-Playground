@@ -1,0 +1,7 @@
+Recreate the attached reference screenshot as an authentic PC-98 visual novel game screen: same composition, same cozy morning-room scene, same UI layout, rendered in strict NEC PC-9801 style — 640x400, 16 colors, heavy dithering, visible scanlines, 4:3 fullscreen screenshot.
+
+SCENE (match the reference): Jolly, small chubby cream-furred yeti-like mascot with round black eyes, pink blush and gentle smile, leaning on its stubby paws at a wooden desk in the center, facing the viewer. On the desk: an open sketchbook, a white mug with a small Jolly face doodle, a stack of colorful books with a small plant. Behind: a big window left showing a lake, village church and mountains under a blue morning sky with pink curtains; a wooden bookshelf right with books, a trailing plant, a framed Jolly picture, a hand-drawn JOLLY poster with a heart, sticky notes, and a chunky CRT monitor.
+
+UI (match the reference exactly): black dialogue box across the bottom with thin pink border and corner ornaments, small black name plate on its top-left reading Jolly in pink pixel font, two lines of pink-white pixel text inside, small pink down-triangle marker at bottom-right. Vertical black command menu on the right side with thin pink border listing six white items with the top one highlighted on a pink bar with a black arrow: はなす, どこかへいく, プレゼントをわたす, いっしょにあそぶ, やすむ, またあとで. Dialogue text: やぁ！ / 今日はどんな一日にしよう？
+
+Invent nothing new, add no side filigree borders, no top status bar, no humans, no photo, no 3D render, no modern UI, no watermark.
