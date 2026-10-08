@@ -7,9 +7,5 @@ This doesn't contain formal experiments, we'll leave for another repo.
 
 ## Playground
 
-### find-jolly-assets
-Find sources images of Jolly online, and create a character reference sheets.
-
-> We used the generated v4 character reference sheet to generate an image of Jolly playing in a playground.
-
-### stylized pc-98 visual novel concept
+### jolly-vn
+Create a producally generated Visual Novel game staring Meta Muse's Jolly character.
