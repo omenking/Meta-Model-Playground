@@ -1,0 +1,319 @@
+#
+# Remove # to use NVL mode.
+#
+
+#[callmacro name="nvl-mode"]
+
+#
+# Force a locale if you want.
+#  - There are 3 languages implemented in this sample game.
+#  - The language can be switched by the config GUI.
+#  - If not specified here (that is, commented out here), your OS locale will be used.
+#
+
+[config name="game.locale" value="en"]
+#[config name="game.locale" value="zh-cn"]
+#[config name="game.locale" value="ja"]
+
+#
+# Title Screen
+#
+
+# Play a BGM.
+[volume track="bgm" vol="0.5"]
+[bgm file="sound/bgm/start.ogg"]
+
+# Show a GUI.
+[gui file="system/title/title.gui"]
+
+# Will be jumped to here.
+[label name="start"]
+[volume track="bgm" vol="0.0" span="1.0"]
+[wait time="2.0"]
+
+#
+# Set the chapter name.
+#
+
+[chapter name="Chapter 1"]
+
+#
+# Show a background image.
+#
+
+[bg file="images/bg/school.png" time="0.5"]
+
+#
+# Play a BGM.
+#
+
+[volume track="bgm" vol="0.5"]
+[bgm file="sound/bgm/afternoon2.ogg"]
+
+#
+# Let Xiaoling enter and say.
+#
+
+# Show Xiaoling at left.
+[ch time="1.0" fade="normal" left="images/ch/xiaoling/xiaoling-normal.png"]
+
+# Say.
+[text name="Xiaoling" text="......"]
+
+# Say. (the same thing by the different notation.)
+[text name="Xiaoling" text="""
+  ......
+"""]
+
+#
+# Let Midori enter.
+#
+
+# Show Midori at right. (multiple-line is allowed)
+[ch
+  time="0.5"
+  fade="normal"
+  right="images/ch/midori/midori-normal.png"
+]
+
+#
+# Dialogue.
+#
+
+[text name="Xiaoling" voice="sound/voice/001.ogg"
+  text=
+    """
+    Would you like to go to a cafe, Mido?
+    """
+  text-en=
+    """
+    Would you like to go to a cafe, Mido?
+    """
+  text-zh-cn=
+    """
+    小美，想不想去咖啡店坐坐？
+    """
+  text-ja=
+    """
+    カフェに行かない？みど
+    """
+]
+
+[text name="Midori" voice="sound/voice/002.ogg"
+  text=
+    """
+    Sure! I'd love some fruitcake.
+    """
+  text-en=
+    """
+    Sure! I'd love some fruitcake.
+    """
+  text-zh-cn=
+    """
+    好呀！我想吃水果蛋糕呢
+    """
+  text-ja=
+    """
+    いいね！フルーツケーキが食べたいな
+    """
+]
+
+[text name="Xiaoling" voice="sound/voice/003.ogg"
+  text=
+    """
+    Where should we go?
+    """
+  text-en=
+    """
+    Where should we go?
+    """
+  text-zh-cn=
+    """
+    咱们去哪家好呢？
+    """
+  text-ja=
+    """
+    どこのお店にする？
+    """
+]
+
+#
+# Option.
+#
+
+[choose name="result"
+  text1="Hoshino Coffee"
+  text2="Starbucks"
+  text3="Segafredo"
+
+  text1-en="Hoshino Coffee"
+  text2-en="Starbucks"
+  text3-en="Segafredo"
+
+  text1-zh-cn="星乃咖啡店"
+  text2-zh-cn="星巴克"
+  text3-zh-cn="世家兰铎咖啡"
+
+  text1-ja="星野珈琲"
+  text2-ja="スターバックス"
+  text3-ja="セガフレード"
+]
+
+#
+# Let Midori smile, move, and say.
+#
+
+[ch right="images/ch/midori/midori-happy.png" time="0.5" fade="normal"]
+
+[move time="1.0" right-x="r-250" accel="deaccel"]
+
+[text name="Midori" voice="sound/voice/004.ogg"
+  text=
+    """
+    Let's go to the station, Xiao!
+    """
+  text-en=
+    """
+    Let's go to the station, Xiao!
+    """
+  text-zh-cn=
+    """
+    玲玲，我们去车站那边那家店吧！
+    """
+  text-ja=
+    """
+    駅のお店に行こうよ、シャオ！
+    """
+]
+
+#
+# Let Xiaoling smile and say.
+#
+
+[ch left="images/ch/xiaoling/xiaoling-smile.png" time="1.0" fade="normal"]
+
+[text name="Xiaoling" voice="sound/voice/005.ogg"
+  text=
+    """
+    Okay, I'll grab my bag. Just a moment, Mido.
+    """
+  text-en=
+    """
+    Okay, I'll grab my bag. Just a moment, Mido.
+    """
+  text-zh-cn=
+    """
+    好的，我去拿个包，等我一下哦，小美
+    """
+  text-ja=
+    """
+    いいよ、じゃあバッグを取ってくるね。ちょっと待ってて、みど
+    """
+]
+
+#
+# Let Xiaoling and Midori leave.
+#
+
+[ch left="none" right="none" time="1.0"]
+
+#
+# NVL Test
+#
+
+[callmacro name="nvl-mode"]
+
+[ch center="images/ch/aki/aki-normal.png"]
+
+[text action="clear"]
+[text text=
+  """
+  Hello, I'm Aki.
+  I'll explain the novel mode, so called NVL.
+  NVL has a fullscreen-styled message box.
+  By default, each text tag will do a line feed.
+  """]
+[text action="inline" text=" To continue a line, use inline action."]
+
+[text action="clear"]
+[text text=
+  """
+  Alice was beginning to get very tired of sitting by her sister \
+  on the bank, and of having nothing to do: once or twice she had peeped \
+  into the book her sister was reading, but it had no pictures or \
+  conversations in it, “and what is the use of a book,” thought Alice \
+  “without pictures or conversations?”
+  """]
+
+[text action="clear"]
+[text text=
+  """
+  You have to clear the message box explicitly.
+  This is why NVL is called "Page Mode" in Suika3.
+  """]
+
+[callmacro name="adv-mode"]
+[text text="You can go back to ADV mode."]
+
+[text name="Aki" text="See you!"]
+
+# Finish. The app will be closed.
+
+#
+# ---
+#
+
+#
+# Macro to start NVL mode.
+#
+[defmacro name="nvl-mode"]
+   [text action="hide"]
+   [wait time="0.3"] # Wait for the message box to hide.
+   [config name="game.novel" value="true"]
+   [config name="msgbox.image" value="system/message/msgbox-nvl.png"]
+   [config name="msgbox.x" value="0"]
+   [config name="msgbox.y" value="0"]
+   [config name="msgbox.margin.line" value="60"]
+   [config name="namebox.enable" value="false"]
+   [config name="choose.box1.idle" value="system/choose/nvl.png"]
+   [config name="choose.box1.hover" value="system/choose/nvl.png"]
+   [config name="choose.box1.idle_anime" value="system/choose/idle-nvl.anime"]
+   [config name="choose.box1.hover_anime" value="system/choose/hover-nvl.anime"]
+   [config name="choose.box2.idle" value="system/choose/nvl.png"]
+   [config name="choose.box2.hover" value="system/choose/nvl.png"]
+   [config name="choose.box2.idle_anime" value="system/choose/idle-nvl.anime"]
+   [config name="choose.box2.hover_anime" value="system/choose/hover-nvl.anime"]
+   [config name="choose.box3.idle" value="system/choose/nvl.png"]
+   [config name="choose.box3.hover" value="system/choose/nvl.png"]
+   [config name="choose.box3.idle_anime" value="system/choose/idle-nvl.anime"]
+   [config name="choose.box3.hover_anime" value="system/choose/hover-nvl.anime"]
+   [config name="click.move" value="true"]
+   [text action="clear"]
+[endmacro]
+
+#
+# Macro to go back ADV mode.
+#
+[defmacro name="adv-mode"]
+   [text action="hide"]
+   [wait time="0.3"] # Wait for the message box to hide.
+   [config name="game.novel" value="false"]
+   [config name="msgbox.image" value="system/message/msgbox.png"]
+   [config name="msgbox.x" value="0"]
+   [config name="msgbox.y" value="520"]
+   [config name="msgbox.margin.line" value="40"]
+   [config name="namebox.enable" value="true"]
+   [config name="choose.box1.idle" value="system/choose/idle.png"]
+   [config name="choose.box1.hover" value="system/choose/hover.png"]
+   [config name="choose.box1.idle_anime" value="system/choose/idle.anime"]
+   [config name="choose.box1.hover_anime" value="system/choose/hover.anime"]
+   [config name="choose.box2.idle" value="system/choose/idle.png"]
+   [config name="choose.box2.hover" value="system/choose/hover.png"]
+   [config name="choose.box2.idle_anime" value="system/choose/idle.anime"]
+   [config name="choose.box2.hover_anime" value="system/choose/hover.anime"]
+   [config name="choose.box3.idle" value="system/choose/idle.png"]
+   [config name="choose.box3.hover" value="system/choose/hover.png"]
+   [config name="choose.box3.idle_anime" value="system/choose/idle.anime"]
+   [config name="choose.box3.hover_anime" value="system/choose/hover.anime"]
+   [config name="click.move" value="false"]
+[endmacro]

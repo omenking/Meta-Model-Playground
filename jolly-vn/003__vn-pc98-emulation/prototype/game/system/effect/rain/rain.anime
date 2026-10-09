@@ -1,0 +1,52 @@
+# fade-in
+effect2 {
+    layer: eff2;
+    start: 0.0;
+    end: 1.0;
+    from-x: 0;
+    from-y: -720;
+    from-a: 0;
+    to-x: 0;
+    to-y: 720;
+    to-a: 120;
+    from-scale-x: 2.0;
+    from-scale-y: 2.0;
+    to-scale-x: 2.0;
+    to-scale-y: 2.0;
+}
+
+# odd layer loop
+effect1 {
+    layer: eff1;
+    start: 0.5;
+    end: 1.5;
+    from-x: 0;
+    from-y: -720;
+    from-a: 80;
+    to-x: 0;
+    to-y: 720;
+    to-a: 120;
+    from-scale-x: 2.0;
+    from-scale-y: 2.0;
+    to-scale-x: 2.0;
+    to-scale-y: 2.0;
+    loop: 0.5;
+}
+
+# even layer loop
+effect2 {
+    layer: eff2;
+    start: 1.0;
+    end: 2.0;
+    from-x: 0;
+    from-y: -720;
+    from-a: 80;
+    to-x: 0;
+    to-y: 720;
+    to-a: 120;
+    from-scale-x: 2.0;
+    from-scale-y: 2.0;
+    to-scale-x: 2.0;
+    to-scale-y: 2.0;
+    loop: 1.0;
+}

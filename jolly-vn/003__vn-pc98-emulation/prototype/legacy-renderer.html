@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jolly VN — PC-98 Prototype (WebNP2-style player)</title>
+<style>
+  :root{ --pink:#ff5da2; --pink-dim:#c93a7a; --bg:#141114; --panel:#1e1a1e; --ink:#f2ecec; --mut:#a89ea6; --ok:#7ee787; --warn:#ffd479; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:ui-monospace, "Courier New", monospace; }
+  header{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:2px solid var(--pink); background:#0d0b0d; }
+  header h1{ font-size:16px; margin:0; letter-spacing:.04em; }
+  header h1 span{ color:var(--pink); }
+  .badge{ font-size:11px; border:1px solid var(--pink-dim); color:var(--pink); padding:3px 8px; border-radius:3px; }
+  main{ max-width:1080px; margin:0 auto; padding:16px; display:grid; grid-template-columns:1fr 300px; gap:16px; }
+  @media (max-width:900px){ main{ grid-template-columns:1fr; } }
+  .screen-wrap{ background:#000; border:3px solid var(--pink); border-radius:4px; padding:8px; }
+  .screen{ position:relative; width:100%; aspect-ratio:8/5; background:#000; overflow:hidden; image-rendering:pixelated; }
+  .screen img.bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:pixelated; }
+  .screen .fallback-bg{ position:absolute; inset:0; display:none; }
+  .scanlines{ position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px); }
+  .jolly{ position:absolute; left:2%; bottom:24%; width:30%; max-width:190px; filter:drop-shadow(2px 2px 0 rgba(0,0,0,.6)); }
+  .title-card{ position:absolute; inset:0; display:none; place-items:center; text-align:center; background:rgba(0,0,0,.72); padding:20px; }
+  .title-card h2{ color:var(--pink); font-size:22px; margin:0 0 8px; }
+  .dialogue{ position:absolute; left:2%; right:2%; bottom:2%; background:rgba(0,0,0,.92); border:2px solid var(--pink); border-radius:4px; padding:26px 12px 12px; min-height:104px; }
+  .nameplate{ position:absolute; top:-13px; left:10px; background:#000; border:2px solid var(--pink); color:var(--pink); font-size:12px; padding:2px 10px; border-radius:3px; }
+  .dialogue p{ margin:0; font-size:15px; line-height:1.55; white-space:pre-wrap; min-height:46px; }
+  .triangle{ position:absolute; right:12px; bottom:8px; color:var(--pink); animation:bob 1s infinite; font-size:13px; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(3px);} }
+  .choices{ position:absolute; right:4%; top:22%; display:none; flex-direction:column; gap:8px; min-width:250px; }
+  .choices button{ text-align:left; background:#000; color:var(--ink); border:2px solid var(--pink); padding:10px 12px; font:inherit; font-size:13px; cursor:pointer; border-radius:3px; }
+  .choices button:hover,.choices button:focus{ background:var(--pink); color:#000; }
+  .controls{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  button.btn{ background:#000; color:var(--ink); border:2px solid var(--pink); padding:8px 12px; font:inherit; font-size:13px; cursor:pointer; border-radius:3px; }
+  button.btn:hover{ background:var(--pink); color:#000; }
+  button.btn.secondary{ border-color:var(--mut); color:var(--mut); }
+  .panel{ background:var(--panel); border:1px solid #3a323a; border-radius:4px; padding:12px; margin-bottom:12px; }
+  .panel h3{ margin:0 0 8px; font-size:13px; color:var(--pink); letter-spacing:.05em; }
+  .panel p,.panel li{ font-size:12.5px; line-height:1.55; color:var(--ink); }
+  .panel .small{ color:var(--mut); font-size:11.5px; }
+  .drive{ display:flex; justify-content:space-between; gap:8px; align-items:center; border:1px solid #3a323a; padding:8px; border-radius:3px; margin-bottom:8px; background:#121012; }
+  .led{ display:inline-block; width:9px; height:9px; border-radius:50%; background:#444; margin-right:6px; }
+  .led.on{ background:var(--ok); } .led.hot{ background:var(--warn); }
+  code{ color:var(--warn); word-break:break-all; }
+  #log{ max-height:190px; overflow:auto; font-size:11.5px; line-height:1.5; white-space:pre-wrap; }
+  dialog{ background:#171317; color:var(--ink); border:2px solid var(--pink); border-radius:4px; max-width:560px; width:calc(100% - 32px); }
+  dialog::backdrop{ background:rgba(0,0,0,.7); }
+  footer{ max-width:1080px; margin:0 auto; padding:4px 16px 28px; color:var(--mut); font-size:12px; line-height:1.6; }
+  a{ color:var(--pink); }
+</style>
+</head>
+<body>
+<header>
+  <h1>JOLLY VN <span>// PC-98 PROTOTYPE</span></h1>
+  <div><span class="badge">SELF-HOSTED WEBNP2-STYLE PLAYER</span> <span class="badge" id="statusBadge">READY</span></div>
+</header>
+<main>
+  <section>
+    <div class="screen-wrap">
+      <div class="screen" id="screen">
+        <div class="fallback-bg" id="fallbackBg"></div>
+        <img class="bg" id="bgImg" alt="PC-98 background (640x400, 16 colors)">
+        <svg class="jolly" id="jollySprite" viewBox="0 0 200 210" role="img" aria-label="Jolly, cream yeti mascot holding a glowing orb">
+          <ellipse cx="100" cy="105" rx="72" ry="82" fill="#fff6e8" stroke="#2b2b2b" stroke-width="4"/>
+          <circle cx="74" cy="88" r="10" fill="#111"/><circle cx="126" cy="88" r="10" fill="#111"/>
+          <ellipse cx="56" cy="108" rx="13" ry="8" fill="#ff9ec4"/><ellipse cx="144" cy="108" rx="13" ry="8" fill="#ff9ec4"/>
+          <path d="M84 118 Q100 128 116 118" fill="none" stroke="#2b2b2b" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="38" cy="140" rx="16" ry="24" fill="#fff6e8" stroke="#2b2b2b" stroke-width="4"/>
+          <ellipse cx="162" cy="128" rx="16" ry="24" fill="#fff6e8" stroke="#2b2b2b" stroke-width="4"/>
+          <circle cx="168" cy="96" r="24" fill="#bfe9ff" stroke="#7fd4ff" stroke-width="4" opacity="0.95"/>
+          <circle cx="160" cy="88" r="7" fill="#ffffff"/>
+          <ellipse cx="72" cy="192" rx="20" ry="10" fill="#fff6e8" stroke="#2b2b2b" stroke-width="4"/>
+          <ellipse cx="128" cy="192" rx="20" ry="10" fill="#fff6e8" stroke="#2b2b2b" stroke-width="4"/>
+        </svg>
+        <div class="title-card" id="titleCard"><div><h2 id="titleText">Chapter 1</h2><p id="titleSub">Click or press Space to start.</p></div></div>
+        <div class="choices" id="choices"></div>
+        <div class="dialogue" id="dialogueBox">
+          <div class="nameplate" id="nameplate">JOLLY VN</div>
+          <p id="dialogueText">Booting from HDD... Insert the boot image to begin.</p>
+          <div class="triangle" id="triangle">&#9660;</div>
+        </div>
+        <div class="scanlines"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btnAdvance" type="button">Advance (Space)</button>
+      <button class="btn" id="btnRestart" type="button">Restart Chapter 1</button>
+      <button class="btn secondary" id="btnStubRingo" type="button">Stub FD: Shrine</button>
+      <button class="btn secondary" id="btnStubWata" type="button">Stub FD: Lake</button>
+    </div>
+    <p class="small" style="color:var(--mut);font-size:12px;line-height:1.6">How to play: click the screen or press Space to advance text. At the Chapter 1 choice, pick a treat — the end card asks the chapter server for a generated Chapter 2, shows a preview/save interstitial, then hot-swaps the new floppy in without reloading the page. Keyboard: <code>Space</code>/<code>Enter</code> advance, <code>1</code>/<code>2</code> choose.</p>
+  </section>
+  <aside>
+    <div class="panel">
+      <h3>DISK DRIVES — HOT SWAP vs REBOOT</h3>
+      <div class="drive"><div><span class="led on" id="ledHdd"></span><strong>HDD</strong> <span id="hddLabel">boot.hdi.json</span><br><span class="small">Chapter 1 boot image. Fixed at boot.</span></div></div>
+      <div class="drive"><div><span class="led" id="ledFd1"></span><strong>FD1</strong> <span id="fd1Label">(empty)</span><br><span class="small">Chapter floppy slot. Hot-swappable.</span></div><button class="btn" id="btnEject" type="button">Eject</button></div>
+      <div class="drive"><div><span class="led" id="ledFd2"></span><strong>FD2</strong> <span class="small">(spare / fallback slot)</span><br><span class="small">Reserved seam. Holds stub chapters offline.</span></div></div>
+      <p class="small">Transition verdict (demonstrated below, written in README): <strong>hot swap works</strong> — the engine re-reads one NovelML file per chapter, so a fetched <code>.fdi</code> loads mid-session. Reboot-with-new-URL (<code>?hdd=...&amp;fd1=...&amp;run=1</code>) is kept as the fallback and as the shareable link form.</p>
+      <p><a href="#" id="rebootLink">Reboot link will appear after generation</a></p>
+    </div>
+    <div class="panel">
+      <h3>CHAPTER SERVER</h3>
+      <p class="small">End card sends <code>POST /api/chapter {choiceId, runLog}</code>. The server generates beats, packs a <code>.fdi</code>, logs the run, and returns its URL. If the server is offline, the FD2 stub slot loads instead — try both paths.</p>
+      <p class="small">Server status: <span id="serverStatus">checking...</span></p>
+    </div>
+    <div class="panel"><h3>RUN LOG</h3><div id="log"></div></div>
+  </aside>
+</main>
+<footer>
+  Prototype for <code>003__vn-game-design/PROTOTYPE.md</code>. Engine contract mirrors Suika3 (<code>pc98</code> preset, one NovelML file per chapter); this browser build renders the same scripts at 640x400 in 16 colors so the loop is playable today without BIOS ROMs. No emulator source is modified — all generation and packing happen on the host (<code>server.mjs</code>, <code>tools/</code>). See <code>README.md</code> in this folder for the self-host file list, BIOS story, CORS notes, and Phase 0–4 mapping.
+</footer>
+<dialog id="interstitial">
+  <h3 style="color:var(--pink);margin-top:0">Chapter 2 is ready — preview / save</h3>
+  <p id="previewText" style="font-size:13px;line-height:1.6"></p>
+  <p style="font-size:12px;color:var(--mut)" id="previewMeta"></p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+    <button class="btn" id="btnPlayGenerated" type="button">Play Chapter 2 (hot swap FD1)</button>
+    <button class="btn" id="btnSaveFdi" type="button">Save .fdi image</button>
+    <button class="btn secondary" id="btnCloseInterstitial" type="button">Stay on end card</button>
+  </div>
+</dialog>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const els = { bg:$("bgImg"), fallback:$("fallbackBg"), jolly:$("jollySprite"), titleCard:$("titleCard"),
+  titleText:$("titleText"), titleSub:$("titleSub"), name:$("nameplate"), text:$("dialogueText"),
+  choices:$("choices"), log:$("log"), status:$("statusBadge"), server:$("serverStatus"),
+  fd1Label:$("fd1Label"), ledFd1:$("ledFd1"), reboot:$("rebootLink"), dialog:$("interstitial") };
+const BG_GRADIENTS = {
+  "bg/matsuri.png":"linear-gradient(180deg,#1a1033 0%,#3d1a4d 45%,#7a2a3a 75%,#1c1410 100%)",
+  "bg/shrine.png":"linear-gradient(180deg,#8fa3b8 0%,#c7d2dd 55%,#5c6650 100%)",
+  "bg/rooftop.png":"linear-gradient(180deg,#ff9a5c 0%,#ff5da2 55%,#3a2a4a 100%)",
+  "bg/ramen.png":"linear-gradient(180deg,#4a2418 0%,#7a3a20 60%,#241610 100%)",
+  "bg/lake.png":"linear-gradient(180deg,#7ec8e3 0%,#cfeef7 50%,#2a6a8a 100%)"
+};
+const state = { steps:[], labels:{}, pc:0, choiceId:null, runLog:[], typing:null, fullText:"",
+  pendingGenerated:null, currentChapter:"", booted:false };
+function log(msg){ const line = "["+new Date().toLocaleTimeString()+"] "+msg;
+  state.runLog.push(line); els.log.textContent = state.runLog.slice(-40).join("\n"); els.log.scrollTop = 1e6; }
+function setBg(file){ els.bg.style.display="block"; els.fallback.style.display="none";
+  els.bg.src = "assets/bg-pc98/" + file.replace("bg/",""); els.bg.onerror = () => {
+    els.bg.style.display="none"; els.fallback.style.display="block";
+    els.fallback.style.background = BG_GRADIENTS[file] || "#222"; }; }
+function showTitle(title, sub){ els.titleText.textContent = title; els.titleSub.textContent = sub||"";
+  els.titleCard.style.display = "grid"; }
+function hideTitle(){ els.titleCard.style.display = "none"; }
+function typeText(speaker, text){ els.name.textContent = speaker || "NARRATION";
+  state.fullText = text; els.text.textContent = ""; let i = 0;
+  clearInterval(state.typing);
+  state.typing = setInterval(() => { i += 2; els.text.textContent = text.slice(0, i);
+    if (i >= text.length) clearInterval(state.typing); }, 18); }
+function finishType(){ clearInterval(state.typing); els.text.textContent = state.fullText; }
+function parseNovel(source, chapterIdFallback){
+  const steps = [], labels = {}; const lines = source.split(/\r?\n/);
+  let i = 0;
+  const attr = (s, k) => { const m = s.match(new RegExp(k+'="([^"]*)"')); return m ? m[1] : ""; };
+  while (i < lines.length){ const line = lines[i].trim(); i++;
+    if (!line || line.startsWith(";")) continue;
+    let m;
+    if ((m = line.match(/^\[chapter\s+id="([^"]+)"\s+title="([^"]*)"\]/))) steps.push({t:"chapter", id:m[1], title:m[2]});
+    else if ((m = line.match(/^\[bg\s+file="([^"]+)"\]/))) steps.push({t:"bg", file:m[1]});
+    else if (line.startsWith("[ch ")) steps.push({t:"ch"});
+    else if ((m = line.match(/^\[text(?:\s+speaker="([^"]*)")?\](.*)\[\/text\]$/))) steps.push({t:"text", speaker:m[1]||"", text:m[2]});
+    else if ((m = line.match(/^\[choose\s+id="([^"]+)"\]/))){
+      const opts = [];
+      while (i < lines.length && !lines[i].includes("[/choose]")){ const ol = lines[i].trim(); i++;
+        const om = ol.match(/^\[option\s+id="([^"]+)"\s+label="([^"]*)"\]/); if (om) opts.push({id:om[1], label:om[2]}); }
+      steps.push({t:"choose", id:m[1], options:opts});
+    }
+    else if ((m = line.match(/^\[label\s+id="([^"]+)"\]/))){ labels[m[1]] = steps.length; steps.push({t:"label", id:m[1]}); }
+    else if ((m = line.match(/^\[goto\s+([^\]]+)\]/))) steps.push({t:"goto", target:m[1]});
+    else if (line.startsWith("[endcard")) steps.push({t:"endcard"});
+    else if (line === "[end]") steps.push({t:"end"});
+  }
+  return { steps, labels, chapterId: chapterIdFallback || "ch?" };
+}
+function loadNovelText(source, chapterId, originLabel){
+  const parsed = parseNovel(source, chapterId);
+  state.steps = parsed.steps; state.labels = parsed.labels; state.pc = 0;
+  state.currentChapter = chapterId;
+  log("Loaded " + chapterId + " (" + parsed.steps.length + " steps) from " + originLabel + ".");
+  const ch = parsed.steps.find(s => s.t === "chapter");
+  showTitle(ch ? ch.title : chapterId, "Click or press Space to play. One NovelML file per chapter.");
+  els.status.textContent = "PLAYING " + chapterId.toUpperCase();
+  els.text.textContent = "Chapter loaded. Click Advance to begin.";
+  els.name.textContent = "JOLLY VN";
+}
+async function fetchText(url){ const r = await fetch(url); if (!r.ok) throw new Error(url + " -> " + r.status); return r.text(); }
+async function fetchDisk(url){
+  const r = await fetch(url); if (!r.ok) throw new Error("disk " + url + " -> " + r.status);
+  const img = await r.json();
+  if (img.magic !== "JOLLY-PC98-DISK") throw new Error("Bad disk magic in " + url);
+  return img;
+}
+function novelFromDisk(img){
+  const key = Object.keys(img.files).find(k => k.endsWith(".novel"));
+  if (!key) throw new Error("No .novel file in disk " + img.label);
+  return { key, text: img.files[key] };
+}
+async function boot(){
+  const q = new URLSearchParams(location.search);
+  const hddUrl = q.get("hdd") || "disks/boot.hdi.json";
+  const fd1Url = q.get("fd1"); const autoRun = q.get("run") === "1";
+  try {
+    const hdd = await fetchDisk(hddUrl);
+    log("HDD mounted: " + hdd.label + " (" + Object.keys(hdd.files).length + " files).");
+    if (fd1Url){
+      const fd1 = await fetchDisk(fd1Url);
+      const nv = novelFromDisk(fd1);
+      els.fd1Label.textContent = fd1.label + " " + fd1Url; els.ledFd1.className = "led on";
+      log("FD1 mounted at boot: " + fd1.label + ". Reboot path (fd1 URL param).");
+      loadNovelText(nv.text, fd1.boot?.chapter || nv.key, "FD1 reboot");
+    } else {
+      const nv = novelFromDisk(hdd);
+      loadNovelText(nv.text, hdd.boot?.chapter || "ch01", "HDD boot");
+    }
+    state.booted = true;
+    if (autoRun) log("run=1: auto-boot from URL parameters (WebNP2 link form).");
+  } catch (e) {
+    log("Disk boot failed (" + e.message + "). Falling back to loose chapter file.");
+    try { loadNovelText(await fetchText("chapters/ch01.novel"), "ch01", "loose file fallback"); state.booted = true; }
+    catch (e2) { els.text.textContent = "Boot failed: " + e2.message + ". Run: node server.mjs"; }
+  }
+}
+function currentStep(){ return state.steps[state.pc]; }
+function advance(){
+  if (els.text.textContent !== state.fullText && state.fullText){ finishType(); return; }
+  hideTitle();
+  let guard = 0;
+  while (state.pc < state.steps.length && guard++ < 50){
+    const s = state.steps[state.pc]; state.pc++;
+    if (s.t === "bg"){ setBg(s.file); continue; }
+    if (s.t === "ch"){ els.jolly.style.display = "block"; continue; }
+    if (s.t === "chapter" || s.t === "label"){ continue; }
+    if (s.t === "goto"){ state.pc = state.labels[s.target] ?? state.pc; continue; }
+    if (s.t === "text"){ typeText(s.speaker, s.text); return; }
+    if (s.t === "choose"){ showChoices(s); return; }
+    if (s.t === "endcard"){ onEndCard(); return; }
+    if (s.t === "end"){ els.status.textContent = "ENDED"; typeText("", "— THE END — Click Restart Chapter 1 to play the other branch."); return; }
+  }
+  if (state.pc >= state.steps.length) typeText("", "— THE END —");
+}
+function showChoices(step){
+  els.choices.innerHTML = ""; els.choices.style.display = "flex";
+  els.name.textContent = "CHOOSE"; els.text.textContent = "Make a choice (click, or press 1 / 2):";
+  state.fullText = els.text.textContent;
+  step.options.forEach((o) => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = o.label;
+    b.addEventListener("click", () => pickChoice(step, o)); els.choices.appendChild(b);
+  });
+  state.pendingChoice = step;
+  log("Choice presented: " + step.options.map(o => o.id).join(" vs ") + ".");
+}
+function pickChoice(step, opt){
+  els.choices.style.display = "none"; state.choiceId = opt.id;
+  log("Player chose: " + opt.id + " (" + opt.label + ").");
+  const target = "after-" + opt.id;
+  if (state.labels[target] !== undefined) state.pc = state.labels[target];
+  advance();
+}
+async function onEndCard(){
+  els.status.textContent = "CHAPTER END";
+  typeText("Jolly", "End of Chapter 1. Asking the chapter server for Chapter 2 (choice: " + (state.choiceId || "?") + ")...");
+  log("End card reached. Requesting generated chapter for choice=" + state.choiceId + ".");
+  if (!state.choiceId){ log("No choice recorded; defaulting to ringo."); state.choiceId = "ringo"; }
+  try {
+    const r = await fetch("/api/chapter", { method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ choiceId: state.choiceId, runLog: state.runLog }) });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
+    state.pendingGenerated = data;
+    log("Server generated " + data.chapterId + " run " + data.runId + " -> " + data.fdiUrl);
+    $("previewText").textContent = data.preview.join(" ");
+    $("previewMeta").textContent = "Disk: " + data.fdiUrl + " - NovelML inside disk: " + data.novelPathInDisk + " - Beats: " + data.beats + " [text] lines. Hot swap keeps this page open; the reboot link reloads with fd1 set.";
+    const rebootUrl = "/?hdd=" + encodeURIComponent("disks/boot.hdi.json") + "&fd1=" + encodeURIComponent(data.fdiUrl) + "&run=1";
+    els.reboot.href = rebootUrl; els.reboot.textContent = "Reboot with this Chapter 2: " + rebootUrl;
+    els.dialog.showModal();
+  } catch (e) {
+    log("Chapter server unavailable (" + e.message + "). FD2 fallback: loading stub chapter.");
+    els.text.textContent = "Chapter server offline. Loading the stub Chapter 2 from the FD2 fallback slot instead — start the server (node server.mjs) for generated chapters.";
+    loadStub(state.choiceId);
+  }
+}
+async function playGenerated(){
+  const data = state.pendingGenerated; if (!data) return;
+  els.dialog.close();
+  try {
+    const img = await fetchDisk(data.fdiUrl);
+    const nv = novelFromDisk(img);
+    els.fd1Label.textContent = img.label + " " + data.fdiUrl; els.ledFd1.className = "led hot";
+    log("HOT SWAP: FD1 inserted mid-session (" + img.label + "). No page reload. Loading " + nv.key + ".");
+    loadNovelText(nv.text, data.chapterId, "FD1 hot swap");
+    els.ledFd1.className = "led on";
+  } catch (e) { log("Hot swap failed: " + e.message); }
+}
+async function loadStub(choiceId){
+  const file = choiceId === "wataame" ? "chapters/stub-ch02-wataame.novel" : "chapters/stub-ch02-ringo.novel";
+  try { loadNovelText(await fetchText(file), choiceId === "wataame" ? "ch02-wataame" : "ch02-ringo", "FD2 stub " + file); }
+  catch (e) { log("Stub load failed: " + e.message); }
+}
+$("btnAdvance").addEventListener("click", advance);
+$("screen").addEventListener("click", (e) => { if (e.target.closest(".choices")) return; advance(); });
+$("btnRestart").addEventListener("click", () => { state.choiceId = null; state.runLog = []; els.log.textContent = ""; boot(); });
+$("btnStubRingo").addEventListener("click", () => { log("Manual FD insert: stub shrine chapter."); loadStub("ringo"); });
+$("btnStubWata").addEventListener("click", () => { log("Manual FD insert: stub lake chapter."); loadStub("wataame"); });
+$("btnEject").addEventListener("click", () => { els.fd1Label.textContent = "(empty)"; els.ledFd1.className = "led"; log("FD1 ejected. HDD boot chapter remains the fallback."); });
+$("btnPlayGenerated").addEventListener("click", playGenerated);
+$("btnCloseInterstitial").addEventListener("click", () => els.dialog.close());
+$("btnSaveFdi").addEventListener("click", async () => {
+  const data = state.pendingGenerated; if (!data) return;
+  const text = await fetchText(data.fdiUrl);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type:"application/json" }));
+  a.download = data.fdiUrl.split("/").pop(); a.click(); URL.revokeObjectURL(a.href);
+  log("Saved .fdi image locally: " + a.download);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space" || e.code === "Enter"){ e.preventDefault(); advance(); }
+  if ((e.key === "1" || e.key === "2") && state.pendingChoice && els.choices.style.display === "flex"){
+    const o = state.pendingChoice.options[Number(e.key) - 1]; if (o) pickChoice(state.pendingChoice, o);
+  }
+});
+fetch("/api/health").then(r => r.json()).then(d => { els.server.textContent = d.ok ? "online (POST /api/chapter ready)" : "unknown"; })
+  .catch(() => { els.server.textContent = "offline — stubs still work; run node server.mjs"; });
+boot();
+</script>
+</body>
+</html>

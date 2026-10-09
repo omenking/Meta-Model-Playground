@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jolly VN — real PC-98 emulation (WebNP2 + Suika3)</title>
+<style>
+  :root{ --pink:#ff5da2; --bg:#141114; --panel:#1e1a1e; --ink:#f2ecec; --mut:#a89ea6; --ok:#7ee787; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:ui-monospace,"Courier New",monospace; }
+  header{ padding:12px 16px; border-bottom:2px solid var(--pink); background:#0d0b0d; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center; }
+  header h1{ font-size:16px; margin:0; } header h1 span{ color:var(--pink); }
+  .badge{ font-size:11px; border:1px solid var(--pink); color:var(--pink); padding:3px 8px; border-radius:3px; }
+  main{ max-width:1180px; margin:0 auto; padding:16px; display:grid; grid-template-columns:1fr 320px; gap:16px; }
+  @media (max-width:940px){ main{ grid-template-columns:1fr; } }
+  /* Shell chrome lives OUTSIDE the emulated screen. Nothing is overlaid
+     on the emulator frame: inside it, suika-98.exe alone draws the
+     background, Jolly sprite, message box and choice buttons. */
+  .emu-frame{ width:100%; aspect-ratio:4/3; border:3px solid var(--pink); border-radius:4px; background:#000; }
+  .emu-frame iframe{ width:100%; height:100%; border:0; display:block; }
+  .panel{ background:var(--panel); border:1px solid #3a323a; border-radius:4px; padding:12px; margin-bottom:12px; }
+  .panel h3{ margin:0 0 8px; font-size:13px; color:var(--pink); }
+  .panel p,.panel li{ font-size:12.5px; line-height:1.55; }
+  .small{ color:var(--mut); font-size:11.5px; line-height:1.55; }
+  button.btn,a.btn{ display:inline-block; background:#000; color:var(--ink); border:2px solid var(--pink); padding:8px 12px; font:inherit; font-size:13px; cursor:pointer; border-radius:3px; text-decoration:none; margin:0 6px 6px 0; }
+  button.btn:hover,a.btn:hover{ background:var(--pink); color:#000; }
+  code{ color:#ffd479; word-break:break-all; }
+  #log{ max-height:170px; overflow:auto; font-size:11.5px; white-space:pre-wrap; line-height:1.5; }
+  footer{ max-width:1180px; margin:0 auto; padding:4px 16px 28px; color:var(--mut); font-size:12px; line-height:1.6; }
+  a{ color:var(--pink); }
+</style>
+</head>
+<body>
+<header>
+  <h1>JOLLY VN <span>// REAL PC-98 EMULATION</span></h1>
+  <div><span class="badge">WEBNP2 (NP2kai WASM)</span> <span class="badge">SUIKA3 (SOURCE BUILD)</span> <span class="badge" id="serverStatus">SERVER: CHECKING</span></div>
+</header>
+<main>
+  <section>
+    <div class="emu-frame">
+      <iframe id="emu" title="WebNP2 PC-98 emulator running the Suika3 engine"
+        src="player/?fd1=/disks-real/boot-fd-retry.xdf&amp;hdd=/disks-real/game-ch1.thd&amp;run=1&amp;mem=64&amp;clk=32&amp;idehdd=0"></iframe>
+    </div>
+    <p class="small">Just let it load: memory check, FreeDOS(98) boot, then the game starts by itself (AUTOEXEC runs <code>SUIKA-98.EXE</code> from the hard disk; the engine draws all game UI). Boot takes one to three minutes — disk reads under emulation are flaky, so the boot floppy retries the launch and the engine re-reads files until they check out. Please give it time before concluding it is stuck. Click inside the frame once, then use the keyboard: <strong>Enter</strong> advances text; at the choice, <strong>← / →</strong> points at an option and <strong>Enter</strong> confirms. All controls on this page sit outside the emulated screen — nothing is drawn over the game.</p>
+    <p>
+      <a class="btn" id="rebootCh1" href="player/?fd1=/disks-real/boot-fd-retry.xdf&amp;hdd=/disks-real/game-ch1.thd&amp;run=1&amp;mem=64&amp;clk=32&amp;idehdd=0" target="_blank" rel="noopener">Reboot: Chapter 1 (full screen)</a>
+      <a class="btn" href="legacy-renderer.html">Old fake renderer (for comparison)</a>
+    </p>
+  </section>
+  <aside>
+    <div class="panel">
+      <h3>CHAPTER 2 — GENERATED ON THE HOST</h3>
+      <p>Finish Chapter 1 in the emulator and note your treat choice, then generate the matching Chapter 2 here. The server packs a real FAT floppy (<code>.xdf</code>) and a reboot hard disk (<code>.thd</code>) — no emulator code is touched.</p>
+      <button class="btn" id="genRingo" type="button">I chose apple candy</button>
+      <button class="btn" id="genWata" type="button">I chose cotton candy</button>
+      <p class="small" id="genOut">Not generated yet this session.</p>
+    </div>
+    <div class="panel">
+      <h3>GETTING CHAPTER 2 INTO THE GAME</h3>
+      <p><strong>Hot swap (no reboot):</strong> save the generated floppy, then in the emulator's own disk UI mount it in <strong>FDD2</strong> (the second floppy row's Insert button), and press Enter in the game. Chapter 1 ends with <code>[load file="B:/CH02-….NOV"]</code>, which the engine resolves from drive B: — verified working in this build.</p>
+      <p><strong>Reboot:</strong> open the generated reboot link. It reloads the emulator with a hard disk whose <code>start.novel</code> is Chapter 2, so it boots straight into the new chapter.</p>
+      <p class="small">Disk contract: one NovelML file per chapter, 8.3 DOS names (<code>CH02-RIN.NOV</code>), clean backgrounds plus a separate sprite — the engine draws all UI.</p>
+    </div>
+    <div class="panel">
+      <h3>IF IT SEEMS STUCK ON A BLACK SCREEN</h3>
+      <p>Boot is slow (one to three minutes) and the screen stays black while the first background is decoded. The boot floppy automatically retries the engine launch, and the engine re-reads any file that fails its integrity checks, so a black screen usually resolves by itself — wait before reloading. If the DOS prompt (<code>C:\&gt;</code>) ever appears, type <code>SUIKA-98.EXE -4</code> and press Enter to relaunch the game by hand. Full detail is in <code>README-EMULATION.md</code>.</p>
+    </div>
+    <div class="panel"><h3>RUN LOG</h3><div id="log"></div></div>
+  </aside>
+</main>
+<footer>
+  Real-emulation build for <code>003__vn-game-design/PROTOTYPE.md</code>. Emulator: self-hosted WebNP2 (Neko Project II kai, WASM) in <code>player/</code>; the emulator core is unmodified upstream (only disk/clock URL plumbing in the shell). Guest: <code>SUIKA-98.EXE</code>, a Suika3 engine compiled from upstream source with small documented reliability patches for flaky emulated disk reads (see <code>README-EMULATION.md</code>), running under a DOS/32A extender on real FAT images in <code>disks-real/</code> built by <code>tools/build_disk.py</code>. ROM-less boot uses NP2kai's built-in BIOS-compatible routine and the bundled FreeDOS(98) floppy; no BIOS or font ROMs are distributed. The previous JavaScript imitation is kept as <code>legacy-renderer.html</code> only so the difference is visible.
+</footer>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const logEl = $("log"), out = $("genOut");
+function log(m){ logEl.textContent += "[" + new Date().toLocaleTimeString() + "] " + m + "\n"; }
+async function generate(choiceId){
+  out.textContent = "Generating Chapter 2 for " + choiceId + "...";
+  try {
+    const r = await fetch("/api/chapter", { method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ choiceId, runLog: logEl.textContent.split("\n") }) });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || ("HTTP " + r.status));
+    log("Generated " + d.chapterId + " run " + d.runId);
+    out.innerHTML = "";
+    const p1 = document.createElement("p");
+    p1.innerHTML = "Floppy: <code>" + d.fdiUrl + "</code><br>Reboot disk: <code>" + d.rebootUrl + "</code>";
+    const a = document.createElement("a");
+    a.className = "btn"; a.target = "_blank"; a.rel = "noopener";
+    a.href = "player/?fd1=/disks-real/boot-fd-retry.xdf&hdd=" + encodeURIComponent(d.rebootUrl) + "&run=1&mem=64&clk=32&idehdd=0";
+    a.textContent = "Reboot into Chapter 2 (full screen)";
+    const save = document.createElement("a");
+    save.className = "btn"; save.href = d.fdiUrl; save.download = "";
+    save.textContent = "Save .fdi floppy";
+    out.append(p1, a, save);
+  } catch (e) { out.textContent = "Generation failed: " + e.message + " (is node server.mjs running?)"; }
+}
+$("genRingo").addEventListener("click", () => generate("ringo"));
+$("genWata").addEventListener("click", () => generate("wataame"));
+fetch("/api/health").then(r => r.json()).then(d => { $("serverStatus").textContent = d.ok ? "SERVER: ONLINE" : "SERVER: ?"; log("Chapter server online."); })
+  .catch(() => { $("serverStatus").textContent = "SERVER: OFFLINE"; log("Chapter server offline - run node server.mjs."); });
+log("Shell loaded. Emulator frame: player/ with fd1=boot-fd-retry.xdf, hdd=game-ch1.thd, run=1, clk=32.");
+</script>
+</body>
+</html>

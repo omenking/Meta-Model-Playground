@@ -1,0 +1,12 @@
+{
+  "magic": "JOLLY-PC98-DISK",
+  "kind": "hdi",
+  "label": "BOOT",
+  "createdAt": "2026-10-08T20:27:12.804412+00:00",
+  "files": {
+    "chapters/ch01.novel": "; Jolly VN - Chapter 1: Matsuri Lights (boot image, ships on HDD)\n; Suika3 NovelML-inspired script. One file per chapter.\n; ASCII-first text until glyph safety is proven on the pc98 build.\n[chapter id=\"ch01\" title=\"Chapter 1 - Matsuri Lights\"]\n[bg file=\"bg/matsuri.png\"]\n[ch file=\"ch/jolly.png\" pos=\"left\"]\n[text]Summer festival street, night. Paper lanterns, fireworks, glowing stalls.[/text]\n[text speaker=\"Jolly\"]Waa! So many festival lights... My orb has competition tonight![/text]\n[text speaker=\"Jolly\"]Look - two stalls at the end of the street. I can only pick one treat before the fireworks finale.[/text]\n[bg file=\"bg/matsuri.png\"]\n[text speaker=\"Jolly\"]Which one should I get? Choose carefully - Chapter 2 starts from this choice.[/text]\n[choose id=\"treat\"]\n[option id=\"ringo\" label=\"Buy the apple candy (ringo-ame)\"]Get the glossy apple candy.[/option]\n[option id=\"wataame\" label=\"Buy the cotton candy (wata-ame)\"]Get the fluffy cotton candy.[/option]\n[/choose]\n[label id=\"after-ringo\"]\n[bg file=\"bg/matsuri.png\"]\n[text speaker=\"Jolly\"]Apple candy! Crunchy, shiny, like a tiny festival lantern I can eat.[/text]\n[text]Jolly holds the apple candy up beside the orb. Both glow red and blue under the fireworks.[/text]\n[goto endcard]\n[label id=\"after-wataame\"]\n[bg file=\"bg/matsuri.png\"]\n[text speaker=\"Jolly\"]Cotton candy! A sweet little cloud on a stick. It looks like my fur![/text]\n[text]Jolly holds the cotton candy up beside the orb. Both glow pink and blue under the fireworks.[/text]\n[label id=\"endcard\"]\n[endcard chapter=\"ch01\" next=\"generate\"]\n[text speaker=\"Jolly\"]The fireworks are starting... Tomorrow will be a new day. (End of Chapter 1)[/text]\n[end]"
+  },
+  "boot": {
+    "chapter": "ch01"
+  }
+}

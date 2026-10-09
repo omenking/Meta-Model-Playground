@@ -1,0 +1,5 @@
+@ECHO OFF
+SET DOS32A=/PRINT:ON
+C:
+CD \
+SUIKA-98.EXE --version

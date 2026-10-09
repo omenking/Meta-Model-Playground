@@ -1,0 +1,9 @@
+{
+  "magic": "JOLLY-PC98-DISK",
+  "kind": "fdi",
+  "label": "CH02-RINGO",
+  "createdAt": "2026-10-08T20:27:12.834096+00:00",
+  "files": {
+    "chapters/ch02-ringo.novel": "; Stub Chapter 2 (apple-candy branch) - Phase 3 hot-swap target.\n; The chapter server generates a fresh copy of this branch on demand;\n; this stub proves both floppies are reachable before generation exists.\n[chapter id=\"ch02-ringo\" title=\"Chapter 2 - Shrine Morning (apple candy)\"]\n[bg file=\"bg/shrine.png\"]\n[ch file=\"ch/jolly.png\" pos=\"left\"]\n[text]Next morning. Hillside shrine in soft snow-light. The apple candy survived the night in Jolly's paw.[/text]\n[text speaker=\"Jolly\"]The apple candy is still shiny! I saved half for this morning.[/text]\n[text speaker=\"Jolly\"]The shrine is so quiet after the festival. Should I make a wish, or follow the pawprints in the snow?[/text]\n[choose id=\"shrine-choice\"]\n[option id=\"wish\" label=\"Clap and make a wish at the shrine\"]Make a wish.[/option]\n[option id=\"prints\" label=\"Follow the tiny pawprints\"]Follow the pawprints.[/option]\n[/choose]\n[label id=\"after-wish\"]\n[text speaker=\"Jolly\"]I wished for another festival... and for this candy to never melt![/text]\n[text]The shrine bell rings once, far away. Jolly bows, very round and very serious.[/text]\n[goto stub-end]\n[label id=\"after-prints\"]\n[text speaker=\"Jolly\"]These pawprints are exactly my size. Did I walk in a circle in my sleep?[/text]\n[text]The pawprints lead in a perfect loop around the stone lantern and back to Jolly's feet.[/text]\n[label id=\"stub-end\"]\n[text speaker=\"Jolly\"]Stub Chapter 2 complete. The generated version adds fresh art and beats. (The End)[/text]\n[end]\n"
+  }
+}

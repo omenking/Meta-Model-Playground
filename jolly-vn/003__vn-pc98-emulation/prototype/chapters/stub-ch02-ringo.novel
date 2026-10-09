@@ -1,0 +1,23 @@
+; Stub Chapter 2 (apple-candy branch) - Phase 3 hot-swap target.
+; The chapter server generates a fresh copy of this branch on demand;
+; this stub proves both floppies are reachable before generation exists.
+[chapter id="ch02-ringo" title="Chapter 2 - Shrine Morning (apple candy)"]
+[bg file="bg/shrine.png"]
+[ch file="ch/jolly.png" pos="left"]
+[text]Next morning. Hillside shrine in soft snow-light. The apple candy survived the night in Jolly's paw.[/text]
+[text speaker="Jolly"]The apple candy is still shiny! I saved half for this morning.[/text]
+[text speaker="Jolly"]The shrine is so quiet after the festival. Should I make a wish, or follow the pawprints in the snow?[/text]
+[choose id="shrine-choice"]
+[option id="wish" label="Clap and make a wish at the shrine"]Make a wish.[/option]
+[option id="prints" label="Follow the tiny pawprints"]Follow the pawprints.[/option]
+[/choose]
+[label id="after-wish"]
+[text speaker="Jolly"]I wished for another festival... and for this candy to never melt![/text]
+[text]The shrine bell rings once, far away. Jolly bows, very round and very serious.[/text]
+[goto stub-end]
+[label id="after-prints"]
+[text speaker="Jolly"]These pawprints are exactly my size. Did I walk in a circle in my sleep?[/text]
+[text]The pawprints lead in a perfect loop around the stone lantern and back to Jolly's feet.[/text]
+[label id="stub-end"]
+[text speaker="Jolly"]Stub Chapter 2 complete. The generated version adds fresh art and beats. (The End)[/text]
+[end]

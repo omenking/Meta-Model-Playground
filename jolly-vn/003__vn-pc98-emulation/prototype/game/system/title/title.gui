@@ -1,0 +1,30 @@
+#
+# Title GUI (640x400 layout for the PC-98 build)
+#
+
+global {
+    fadein: 0.0;
+    fadeout: 0.0;
+    cancelse: sound/se/click.ogg;
+    escapecancel: no;
+    rightcancel: no;
+}
+
+BASE {
+    id: 32;
+    type: noaction;
+    x: 0;
+    y: 0;
+    image-idle: system/title/base.png;
+}
+
+START {
+    id: 1;
+    type: goto;
+    label: start;
+    image-idle: system/title/start-idle.png;
+    image-hover: system/title/start-hover.png;
+    image-press: system/title/start-press.png;
+    x: 236;
+    y: 320;
+}

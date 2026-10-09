@@ -1,0 +1,9 @@
+{
+  "magic": "JOLLY-PC98-DISK",
+  "kind": "fdi",
+  "label": "CH02-WATA",
+  "createdAt": "2026-10-08T20:27:12.863705+00:00",
+  "files": {
+    "chapters/ch02-wataame.novel": "; Stub Chapter 2 (cotton-candy branch) - Phase 3 hot-swap target.\n[chapter id=\"ch02-wataame\" title=\"Chapter 2 - Lake Morning (cotton candy)\"]\n[bg file=\"bg/lake.png\"]\n[ch file=\"ch/jolly.png\" pos=\"left\"]\n[text]Next morning. Wooden dock on a mountain lake. Mist, church bells, sparkling sun.[/text]\n[text speaker=\"Jolly\"]The cotton candy melted a little... now it is a tiny pink cloud hat.[/text]\n[text speaker=\"Jolly\"]The lake is so sparkly. Should I skip a stone, or sit and watch the mist?[/text]\n[choose id=\"lake-choice\"]\n[option id=\"skip\" label=\"Skip a flat stone across the lake\"]Skip a stone.[/option]\n[option id=\"sit\" label=\"Sit on the dock and watch the mist lift\"]Sit and watch.[/option]\n[/choose]\n[label id=\"after-skip\"]\n[text speaker=\"Jolly\"]One... two... three skips! The orb counted for me.[/text]\n[text]Ripples cross the whole lake, turning the morning sun into a thousand tiny festivals.[/text]\n[goto stub-end]\n[label id=\"after-sit\"]\n[text speaker=\"Jolly\"]If I sit very still, the mist sits with me. We are both clouds today.[/text]\n[text]Slowly the mist lifts. The village across the lake appears, house by house, like a story being told.[/text]\n[label id=\"stub-end\"]\n[text speaker=\"Jolly\"]Stub Chapter 2 complete. The generated version adds fresh art and beats. (The End)[/text]\n[end]\n"
+  }
+}

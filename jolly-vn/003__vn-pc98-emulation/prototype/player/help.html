@@ -1,0 +1,1373 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101010" />
+    <link rel="icon" type="image/png" href="./np2icon.png" />
+    <link rel="apple-touch-icon" href="./np2icon.png" />
+    <title>WebNP2 使い方</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --page-bg: #101010;
+        --bg: #fafafa;
+        --bg-panel: #ffffff;
+        --border: #d5d5d5;
+        --text: #1a1a1a;
+        --text-dim: #666666;
+        --accent: #4a90d9;
+        --accent-dim: #2c5a86;
+        --danger: #d32f2f;
+        --header-bg: #0c0c0c;
+        --header-text: #f2f2f2;
+        --header-tagline-text: #a8a8a8;
+        --page-footer-bg: #1a1a1a;
+        --page-footer-text: #8c8c8c;
+        --page-footer-border: rgba(255, 255, 255, 0.1);
+        --footer-btn-bg: #4a4a4a;
+        --footer-btn-border: #202020;
+        --footer-text: #e6e6e6;
+        --code-bg: #f1f1f1;
+        --note-bg: #fff7e6;
+        --note-border: #e6c46a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+        background: var(--page-bg);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--page-bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header.help-header {
+        flex: 0 0 auto;
+        background: var(--header-bg);
+        padding: 10px 16px;
+        box-shadow:
+          inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+          0 2px 6px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .help-header-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .help-header-title img {
+        width: 28px;
+        height: 28px;
+        display: block;
+      }
+
+      .help-header-title h1 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0;
+        color: var(--header-text);
+        letter-spacing: 0.03em;
+      }
+
+      .lang-toggle-btn {
+        flex: 0 0 auto;
+        padding: 6px 14px;
+        font-size: 12px;
+        border-radius: 5px;
+        border: 1px solid var(--footer-btn-border);
+        background: var(--footer-btn-bg);
+        color: var(--footer-text);
+        cursor: pointer;
+      }
+
+      .lang-toggle-btn:hover {
+        background: #5c5c5c;
+      }
+
+      main {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: center;
+        padding: 24px 16px 40px;
+      }
+
+      .help-content {
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .help-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        padding: 24px 28px;
+        margin-bottom: 20px;
+      }
+
+      .help-card h2 {
+        font-size: 17px;
+        margin: 0 0 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .help-card h3 {
+        font-size: 15px;
+        margin: 24px 0 10px;
+      }
+
+      .help-card p {
+        line-height: 1.8;
+        font-size: 14px;
+      }
+
+      .help-card ul,
+      .help-card ol {
+        line-height: 1.8;
+        font-size: 14px;
+        padding-left: 22px;
+      }
+
+      .help-card img {
+        max-width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        display: block;
+        margin: 12px 0;
+      }
+
+      .help-card code {
+        background: var(--code-bg);
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13px;
+      }
+
+      .help-card a {
+        color: var(--accent-dim);
+      }
+
+      table.btn-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin: 12px 0;
+      }
+
+      table.btn-table th,
+      table.btn-table td {
+        border: 1px solid var(--border);
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+        line-height: 1.6;
+      }
+
+      table.btn-table th {
+        background: var(--code-bg);
+      }
+
+      .btn-icon-cell {
+        text-align: center;
+        width: 44px;
+      }
+
+      .fake-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 5px;
+        background: var(--footer-btn-bg);
+        border: 1px solid var(--footer-btn-border);
+        color: var(--footer-text);
+      }
+
+      .fake-icon-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .note-box {
+        background: var(--note-bg);
+        border: 1px solid var(--note-border);
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 13px;
+        line-height: 1.7;
+        margin: 12px 0;
+      }
+
+      footer.help-footer {
+        flex: 0 0 auto;
+        width: 100%;
+        font-size: 11px;
+        color: var(--page-footer-text);
+        text-align: center;
+        padding: 8px 16px;
+        background: var(--page-footer-bg);
+        border-top: 1px solid var(--page-footer-border);
+      }
+
+      footer.help-footer a {
+        color: var(--page-footer-text);
+      }
+
+      .lang-en {
+        display: none;
+      }
+
+      /* このページに直接コンテキストを持たせるため、body[data-lang] で切り替える。 */
+      body[data-lang='en'] .lang-ja {
+        display: none;
+      }
+
+      body[data-lang='en'] .lang-en {
+        display: block;
+      }
+
+      body[data-lang='en'] table .lang-en {
+        display: table-row;
+      }
+    </style>
+  </head>
+  <body data-lang="ja">
+    <header class="help-header">
+      <div class="help-header-title">
+        <img src="./np2icon.png" alt="" width="28" height="28" />
+        <h1 class="lang-ja">WebNP2 使い方</h1>
+        <h1 class="lang-en">WebNP2 Help</h1>
+      </div>
+      <button type="button" class="lang-toggle-btn" id="langToggleBtn"></button>
+    </header>
+
+    <main>
+      <div class="help-content">
+        <!-- 1. はじめに -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>はじめに</h2>
+            <p>
+              WebNP2 は、PC-98 エミュレータ
+              <a href="https://github.com/AZO234/NP2kai" target="_blank" rel="noopener">NP2kai</a>
+              の wasm ビルドをブラウザ上で動かす Web プレイヤーです。URL を開くだけで起動でき、
+              続きから再開できることを目指しています。
+            </p>
+            <p>
+              <strong>ROM・市販ソフトウェアのディスクイメージは一切同梱していません。</strong>
+              手元のHDD/FDイメージを画面へドラッグ&ドロップして読み込ませて使います。
+            </p>
+            <p>
+              読み込んだディスクイメージは、あなたのブラウザ内(IndexedDB)にのみ保存され、
+              サーバーへ送信されることはありません。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Introduction</h2>
+            <p>
+              WebNP2 is a web player that runs a WebAssembly build of the PC-98 emulator
+              <a href="https://github.com/AZO234/NP2kai" target="_blank" rel="noopener">NP2kai</a>
+              in your browser. The goal is a "just open the URL" experience where you can
+              resume right where you left off.
+            </p>
+            <p>
+              <strong>No ROM images or commercial software disk images are bundled.</strong>
+              You load your own HDD/FD images by dragging and dropping them onto the screen.
+            </p>
+            <p>
+              Any disk image you load is saved only inside your browser (IndexedDB) and is
+              never sent to any server.
+            </p>
+          </div>
+        </section>
+
+        <!-- 2. 起動する -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>起動する</h2>
+            <p>
+              ページを開くと起動オーバーレイが表示されます。URLでディスクイメージを
+              指定していない場合は「そのまま起動」（イメージ無しで開始し、後から
+              ドラッグ&ドロップで読み込む）と「FreeDOS(98) で起動」（同梱の起動FDで
+              すぐに試す）の2択が、URLでディスクを指定している場合は単一の
+              「クリックして起動」ボタンが表示されます。ライブラリに保存済みの
+              イメージがあれば「保存済みディスクから起動」も表示されます。
+              起動するのはこれらのボタンを押した場合だけで、余白をクリックしても起動しません。
+            </p>
+            <img src="./help/overlay.png" alt="起動オーバーレイ。そのまま起動/FreeDOS(98)で起動などの選択ボタンが並ぶ" />
+            <div class="note-box">
+              「FreeDOS(98) で起動」で立ち上がるのは、コマンドを打って操作する DOS の画面です。
+              何を打てばいいのか・どんなコマンドが使えるのかは
+              <a href="./freedos.html">FreeDOS(98) の使い方</a> にまとめてあります。
+            </div>
+            <p>
+              ブラウザの音声再生制限により、音声はクリック操作(または自動起動時は
+              最初のクリック/キー入力)まではミュートになります。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Starting the emulator</h2>
+            <p>
+              A start overlay appears when you open the page. If no disk image is
+              specified via URL, you get two choices: "Start As-Is" (start with no
+              image loaded, then drag & drop one afterward) or "Start with
+              FreeDOS(98)" (try it immediately with the bundled boot floppy). If a
+              disk is specified via URL, a single "Click to Start" button is shown
+              instead. If saved images exist in the library, a "Boot from Saved
+              Disk" button also appears.
+              Only these buttons start the emulator; clicking empty overlay space does nothing.
+            </p>
+            <img src="./help/overlay-en.png" alt="Start overlay showing Start As-Is / Start with FreeDOS(98) choices" />
+            <div class="note-box">
+              "Start with FreeDOS(98)" boots into a DOS command line. For what to type and
+              which commands are available, see
+              <a href="./freedos.html">Using FreeDOS(98)</a>.
+            </div>
+            <p>
+              Due to browser autoplay restrictions, audio stays muted until you
+              click (or, for auto-start, until your first click or key press).
+            </p>
+          </div>
+        </section>
+
+        <!-- 3. ディスクイメージを読み込む -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>ディスクイメージを読み込む</h2>
+            <p>
+              画面領域にファイルをドラッグ&ドロップすると、拡張子からHDD/FDを
+              自動判別して読み込みます。
+            </p>
+            <ul>
+              <li>HDD判定: <code>.thd</code> <code>.hdi</code> <code>.nhd</code> <code>.hdd</code></li>
+              <li>
+                FD判定: NP2kai本体が受け付ける形式に準拠(<code>.bin</code>は誤検出防止のため対象外)。
+                <code>.d88</code> <code>.d98</code> <code>.fdi</code> <code>.hdm</code> <code>.xdf</code>
+                <code>.dup</code> <code>.2hd</code> <code>.nfd</code> <code>.fdd</code> <code>.hd4</code>
+                <code>.hd5</code> <code>.hd9</code> <code>.h01</code> <code>.hdb</code> <code>.ddb</code>
+                <code>.dd6</code> <code>.dd9</code> <code>.dcp</code> <code>.dcu</code> <code>.flp</code>
+                <code>.tfd</code> <code>.fim</code> <code>.img</code> <code>.ima</code>
+              </li>
+            </ul>
+            <p>
+              画面下部にはFDD1/FDD2/HDDそれぞれのスロット行があり、挿入・
+              FreeDOS(98)挿入(FDD1のみ)・排出・ブランク作成・ダウンロードの
+              各ボタンで直接操作できます。
+            </p>
+            <p>
+              <strong>HDDは起動前だけ扱えます。</strong>
+              エミュレータのコアが実行中のHDD挿抜に対応していないため、HDDスロットの
+              ボタン(セット・ライブラリからセット・ブランクHDD作成・取り外し)は
+              起動前のみ有効です。起動前にHDDをドラッグ&ドロップした場合も、
+              すぐには起動せずHDDスロットへ「セット」した状態で止まります
+              (スロット名が斜体で表示されます)。中身を整えてから、
+              起動ボタンで起動してください。
+            </p>
+            <p>
+              各スロット行の左端にはアクセスランプがあり、そのドライブを
+              読み書きしている間だけ赤く点灯します(実機のドライブランプと同じ感覚で、
+              ゲストがディスクを触っているかどうかの目安になります)。
+            </p>
+            <img src="./help/overview.png" alt="プレイヤー全体像。上部にツールバー(ポーズ／フルスクリーン／ソフトキーボード／スクリーンショット／「…」が中央、マシンリセットは右端に分離)、下部にFDD1/FDD2/HDDのスロット行" />
+            <p>
+              URLパラメータ(<code>?hdd=</code>/<code>?fd1=</code>/<code>?fd2=</code>等)で
+              イメージを直接指定して開くこともできます。詳細は
+              <a href="https://github.com/uraraworks/WebNP2#readme" target="_blank" rel="noopener">READMEのURLパラメータの節</a>
+              を参照してください。
+            </p>
+            <p>
+              これらのパラメータには<code>.zip</code> / <code>.lzh</code>を直接
+              指定することもでき、取得したデータが圧縮ファイルだと自動的に展開
+              されます。中身が1枚だけならそのまま起動に使いますが、複数枚
+              含まれる場合はどれを使うか決められないため、<code>run=1</code>を
+              指定していても自動起動せずディスクライブラリを開いて選ばせます。
+            </p>
+            <p>
+              <code>?lib=URL</code>(<code>&amp;lib=URL2</code> のように複数指定可)は、種別
+              (FD/HDD)を問わずディスクライブラリへ登録するだけの共有リンク用パラメータです。
+              スロットへは自動挿入せず必ずライブラリを開き、指定時は <code>run=1</code> でも
+              自動起動しません。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Loading disk images</h2>
+            <p>
+              Dropping a file onto the screen area auto-detects whether it's an
+              HDD or FD image based on its extension.
+            </p>
+            <ul>
+              <li>HDD: <code>.thd</code> <code>.hdi</code> <code>.nhd</code> <code>.hdd</code></li>
+              <li>
+                FD: follows the formats accepted by the NP2kai core itself (<code>.bin</code>
+                is excluded to avoid false positives).
+                <code>.d88</code> <code>.d98</code> <code>.fdi</code> <code>.hdm</code> <code>.xdf</code>
+                <code>.dup</code> <code>.2hd</code> <code>.nfd</code> <code>.fdd</code> <code>.hd4</code>
+                <code>.hd5</code> <code>.hd9</code> <code>.h01</code> <code>.hdb</code> <code>.ddb</code>
+                <code>.dd6</code> <code>.dd9</code> <code>.dcp</code> <code>.dcu</code> <code>.flp</code>
+                <code>.tfd</code> <code>.fim</code> <code>.img</code> <code>.ima</code>
+              </li>
+            </ul>
+            <p>
+              There's an FDD1/FDD2/HDD slot row at the bottom of the player, with
+              buttons for Insert, Insert FreeDOS(98) (FDD1 only), Eject, New Blank,
+              and Download for each drive.
+            </p>
+            <p>
+              <strong>HDDs can only be handled before boot.</strong>
+              The emulator core cannot swap a HDD while running, so the HDD slot
+              buttons (Set, Set from library, Create blank HDD, Remove) are enabled
+              only before boot. Dropping a HDD image before boot no longer starts the
+              machine either: it is just <em>set</em> into the HDD slot (the slot name
+              is shown in italics). Prepare its contents, then press the boot button.
+            </p>
+            <p>
+              Each slot row starts with an access lamp that glows red while that
+              drive is being read or written, just like the drive LED on real
+              hardware — a handy hint that the guest is touching the disk.
+            </p>
+            <img src="./help/overview-en.png" alt="Player overview with the toolbar on top (Pause, Fullscreen, On-screen Keyboard, Screenshot, and More centered, with Reset Machine split off to the right end) and FDD1/FDD2/HDD slot rows below" />
+            <p>
+              You can also open the page with URL parameters
+              (<code>?hdd=</code>/<code>?fd1=</code>/<code>?fd2=</code>, etc.) to load
+              images directly. See the
+              <a href="https://github.com/uraraworks/WebNP2#readme" target="_blank" rel="noopener">URL parameters section of the README</a>
+              for details.
+            </p>
+            <p>
+              These parameters also accept a <code>.zip</code> / <code>.lzh</code>
+              URL directly — if the fetched content is an archive, it's extracted
+              automatically. A single disk inside is used right away; if it
+              contains multiple disks, WebNP2 can't decide which one to boot, so
+              it skips auto-start (even with <code>run=1</code>) and opens the
+              Disk Library for you to choose.
+            </p>
+            <p>
+              <code>?lib=URL</code> (repeatable, e.g. <code>&amp;lib=URL2</code>) is a sharing-link
+              parameter that only registers images in the Disk Library, regardless of kind (FD/HDD).
+              It never auto-inserts into a slot — the Library always opens — and skips <code>run=1</code>
+              auto-boot whenever it's given.
+            </p>
+          </div>
+        </section>
+
+        <!-- 3.5. ファイル転送 -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>ファイル転送（このブラウザ⇔ディスクイメージ）</h2>
+            <p>
+              「…」→「ディスク」→「ファイル転送」から、FTPクライアント風の
+              2ペインダイアログを開けます。上/左ペインが「このブラウザ」、
+              下/右ペインが「ディスクイメージ(PC-98側)」です。
+            </p>
+            <img src="./help/filemanager.png" alt="ファイル転送ダイアログ。左右(または上下)2ペインとブラウザ⇔ディスクイメージの転送ボタン" />
+            <ul>
+              <li>
+                「このブラウザ」側は、ファイル選択またはドラッグ&ドロップで
+                受け取ります。<code>.lzh</code> / <code>.zip</code> は自動的に
+                展開され、中身がそのまま一覧に並びます。
+              </li>
+              <li>
+                「ディスクイメージ(PC-98側)」側は、対象(実行中のFDD1/FDD2、
+                またはライブラリ内のFDイメージ)を選んでから、ファイル一覧の
+                閲覧・ディレクトリ移動・削除・新規フォルダ作成ができます。
+                空き容量も表示されます。
+              </li>
+              <li>
+                「転送用FDを作成」ボタンで、フォーマット済み1.2MBのFDイメージを
+                ワンクリックで作り、ディスクライブラリへ保存できます。
+              </li>
+              <li>
+                中央の矢印ボタン(→/←、画面が狭いときは↓/↑)で転送します。
+                長いファイル名は8.3形式への短縮案を確認してから書き込みます。
+              </li>
+            </ul>
+            <p>
+              実行中のFDDへの転送も安全に行えます。書き込み後は自動的に
+              排出→再挿入され、ゲストのDOSがメディア交換として認識します。
+              ただし、ゲストがフロッピーへアクセス中(FDDランプ点灯中)の
+              転送は避けてください。<code>.d88</code>形式は編集に対応していません。
+              HDDイメージ(<code>.thd</code> <code>.nhd</code> <code>.hdi</code>
+              <code>.hdd</code>)は<strong>起動前のみ</strong>選択できます。
+              エミュレータが実行中のHDD挿抜に対応していないため、起動後は
+              一覧に表示されません。
+            </p>
+            <p>
+              典型的な使い方: 入手したPC-98用フリーウェア(<code>.lzh</code>)を
+              このブラウザ側へドロップ → 転送用FDへ書き込み → ゲストのDOSから
+              実行、という流れです。逆方向(ゲスト→ブラウザ、つまり
+              ダウンロード)も可能です。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>File transfer (browser ⇔ disk image)</h2>
+            <p>
+              More (…) → Disk → File Transfer opens an FTP-client-style
+              two-pane dialog. The top/left pane is "This browser" and the
+              bottom/right pane is "Disk image (PC-98 side)".
+            </p>
+            <img src="./help/filemanager-en.png" alt="File transfer dialog with two panes (side by side or stacked) and transfer arrow buttons between browser and disk image" />
+            <ul>
+              <li>
+                "This browser" accepts files via a file picker or
+                drag-and-drop. <code>.lzh</code> / <code>.zip</code> archives
+                are automatically extracted, and their contents are listed
+                directly.
+              </li>
+              <li>
+                "Disk image (PC-98 side)" lets you pick a target (a running
+                FDD1/FDD2, or an FD image from the library), then browse the
+                file list, navigate directories, delete files, and create new
+                folders. Free space is also shown.
+              </li>
+              <li>
+                The "Create Transfer FD" button creates a formatted 1.2MB FD
+                image with one click and saves it to the Disk Library.
+              </li>
+              <li>
+                Use the center arrow buttons (→/←, or ↓/↑ on narrow screens)
+                to transfer files. Long filenames are shortened to 8.3 format,
+                with a confirmation before writing.
+              </li>
+            </ul>
+            <p>
+              Transfers to a running FDD are safe even while the emulator is
+              running: after writing, the drive is automatically ejected and
+              reinserted so the guest DOS recognizes it as a media swap.
+              However, avoid transferring while the guest is actively
+              accessing the floppy (FDD light on). The <code>.d88</code> format
+              is not supported for editing. HDD images (<code>.thd</code>
+              <code>.nhd</code> <code>.hdi</code> <code>.hdd</code>) can only be
+              selected <strong>before boot</strong> — the emulator core cannot
+              swap a HDD while running, so they disappear from the list once
+              the machine has started.
+            </p>
+            <p>
+              A typical use case: drop a PC-98 freeware archive
+              (<code>.lzh</code>) onto the browser side, write it to a
+              transfer FD, then run it from the guest's DOS. The reverse
+              direction (guest → browser, i.e. downloading) also works.
+            </p>
+          </div>
+        </section>
+
+        <!-- 4. ツールバーのボタン一覧 -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>ツールバーと「…」メニュー</h2>
+            <img src="./help/overview.png" alt="プレイヤー全体像。ツールバーのアイコンが並ぶ" />
+            <p>
+              常時表示は<strong>ポーズ／フルスクリーン／ソフトキーボード／スクリーンショット／「…」</strong>
+              が中央にまとまり、<strong>マシンリセットだけ右端に分離</strong>されています。誤って押すと
+              起動中の状態が丸ごと吹き飛ぶため、頻繁に押す他の操作から指1本ぶん離してあります。
+              「…」内は表示／入力／サウンド／ディスク／ステートの5グループと、ROM登録／デバッガ／使い方／言語の
+              直結行です。言語行は地球儀アイコンと現在値を表示します。「表示」は画面の縦横比モード
+              (既定は実機と同じ4:3、ドット等倍にも切替可)です。
+            </p>
+            <table class="btn-table">
+              <thead>
+                <tr><th></th><th>ボタン</th><th>説明</th></tr>
+              </thead>
+              <tbody id="btnTableJa"></tbody>
+            </table>
+            <p>
+              ポーズ中はホストCPUの負荷が下がります(実測: 実行中 約62% → ポーズ後、数秒かけて
+              1〜3%まで低下)。単に「タブを裏に回す」だけでは下がりません(音を鳴らしているタブは
+              ブラウザがスロットルしないため)。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Toolbar and More menu</h2>
+            <img src="./help/overview-en.png" alt="Player overview with the toolbar icons" />
+            <p>
+              <strong>Pause, Fullscreen, On-screen Keyboard, Screenshot, and More (…)</strong>
+              stay centered, while <strong>Reset Machine is split off to the right end</strong>.
+              It's kept a finger's width away from the buttons you press often, because a
+              stray tap would wipe out whatever state is currently running.
+              More contains Display, Input, Sound, Disk, and State groups plus direct rows
+              for ROM Files, Debugger, Help, and Language. Language shows a globe and the
+              current value. Display is the screen aspect mode (defaults to 4:3, matching a
+              real CRT; can be switched to pixel-perfect).
+            </p>
+            <table class="btn-table">
+              <thead>
+                <tr><th></th><th>Button</th><th>Description</th></tr>
+              </thead>
+              <tbody id="btnTableEn"></tbody>
+            </table>
+            <p>
+              Pausing lowers host CPU load (measured: about 62% while running →
+              settles to 1–3% within a few seconds after pausing). Simply switching to
+              another tab does not lower it — browsers don't throttle a tab that's
+              playing audio.
+            </p>
+          </div>
+        </section>
+
+        <!-- 4.5. スマホでの操作 -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>スマホでの操作</h2>
+            <p>
+              画面幅が640px未満の端末では、画面がはみ出さないよう端数スケールで
+              自動的に縮小表示されます。
+            </p>
+            <p>
+              タッチ操作はマウス操作に対応します。<strong>タップ</strong>で左クリック、
+              <strong>指を動かす</strong>とカーソルが追従し、その場で約0.5秒
+              <strong>長押し</strong>してから動かすと左ボタンドラッグになります。
+              <strong>2本指タップ</strong>は右クリックです。
+            </p>
+            <p>
+              ツールバーのキーボードアイコンから、PC-98配列のソフトキーボードを開閉できます。
+              SHIFT/CTRL/GRPHは1回タップすると次の1打だけに適用されるワンショット
+              (点灯表示で確認できます)、CAPS/かなはロックトグルです。テンキーブロックは
+              既定では非表示で、キーボード内の「テンキー」キーで開閉します。
+            </p>
+            <p>
+              実機と同様、キーを押しっぱなしにすると一定時間後から連続入力される
+              キーリピートが働きます(物理キーボードでも同様です)。
+            </p>
+            <p>
+              「…」→「入力」→「入力設定」には、ゲームパッド／キーボード／バーチャルパッドの
+              3タブがあります。物理ゲームパッドのボタン・軸やホストの物理キーをPC-98キーへ
+              割り当てられ、割当先は共通のPC-98配列キーピッカーから選びます。ホストキー再割り当ては
+              既定OFFで、組み込みの「テンキー移動(矢印キー→テンキー)」などを複製して編集できます。
+            </p>
+            <img src="./help/input-settings.png" alt="ゲームパッド・キーボード・バーチャルパッドの3タブを持つ入力設定ダイアログ" />
+            <p>
+              バーチャルパッドは縦持ちでは画面の下、横持ちでは左右の余白へ自動配置されます。
+              ダーク背景の上へ表示されるため、白系の操作部も見分けやすくなっています。
+              横持ちで画面が狭い場合、FDD/HDDのドライブ名を残したまま操作ボタンが複数段に折り返されます。
+              ソフトキーボード・パッド・バーチャルトラックパッドいずれかの表示中だけ、
+              キーボードボタン直後に⌨／🎮／🖱の切替チップが現れます。
+              パッド表示中に🎮をもう一度押すと、プロファイル選択と「割当を編集」を開けます。
+              入力パネルが開いている間は画面全体が1画面に収まるよう縮小され、FDスロット行は
+              一時的に隠れます(ディスクの入れ替えはパネルを閉じてから行ってください)。
+            </p>
+            <img src="./help/virtual-pad.png" alt="スマートフォン縦持ちでゲーム画面の下に表示されたバーチャルパッド" />
+            <img src="./help/virtual-pad-landscape.png" alt="スマートフォン横持ちでゲーム画面の左右に表示されたバーチャルパッド" />
+            <p>
+              🖱を押すとバーチャルトラックパッド帯が開きます。<strong>1本指でなぞる</strong>と
+              カーソルの相対移動、<strong>短いタップ</strong>で左クリック、
+              <strong>2本指タップ</strong>で右クリック、<strong>約450ms静止させてからの
+              長押しドラッグ</strong>で左ボタンドラッグです。ゲーム画面(canvas)を直接触る
+              従来の絶対追従タッチもそのまま使えます。トラックパッドの慣例である2本指ドラッグ
+              (ホイール相当)は、PC-98バスマウスに左右2ボタンしかなく受け取り先が無いため
+              未対応です。
+            </p>
+            <img src="./help/virtual-trackpad.png" alt="スマートフォンでゲーム画面の下に表示されたバーチャルトラックパッド" />
+          </div>
+          <div class="lang-en">
+            <h2>Using on a smartphone</h2>
+            <p>
+              On screens narrower than 640px, the display is automatically
+              scaled down by a fractional factor so it never overflows.
+            </p>
+            <p>
+              Touch input maps onto mouse operations. A <strong>tap</strong> is a
+              left click, <strong>dragging your finger</strong> moves the cursor,
+              and holding still for about 0.5 seconds (<strong>long press</strong>)
+              before moving performs a left-button drag. A
+              <strong>two-finger tap</strong> is a right click.
+            </p>
+            <p>
+              The keyboard icon in the toolbar opens/closes a PC-98 layout
+              on-screen keyboard. SHIFT/CTRL/GRPH are one-shot modifiers that
+              apply to only the next keystroke (shown lit while active), while
+              CAPS/Kana are lock toggles. The numeric keypad block is hidden by
+              default; toggle it with the “Tenkey” key inside the keyboard panel.
+            </p>
+            <p>
+              Just like the real hardware, holding a key down triggers key
+              repeat after a short delay (this also applies to a physical
+              keyboard).
+            </p>
+            <p>
+              More (…) → Input → Input Settings has three tabs: Gamepad, Keyboard,
+              and Virtual Pad. Map physical gamepad buttons/axes or host keys to
+              PC-98 keys using the shared PC-98 keyboard picker. Host-key remapping
+              is off by default and includes a built-in “Tenkey Movement
+              (Arrows → Tenkey)” profile that you can duplicate and edit.
+            </p>
+            <img src="./help/input-settings-en.png" alt="Input Settings dialog with Gamepad, Keyboard, and Virtual Pad tabs" />
+            <p>
+              In portrait, the Virtual Pad appears below the screen; in landscape,
+              it uses the left and right margins. The dark page background keeps its
+              light controls visible. When space is tight in landscape, each drive name
+              remains visible while its FDD/HDD action buttons wrap onto extra rows. A
+              ⌨ / 🎮 / 🖱 switch appears immediately after the keyboard button whenever
+              any one of the on-screen keyboard, Virtual Pad, or Virtual Trackpad is
+              visible. Press 🎮 again while the pad is active to choose a profile or
+              edit assignments. While any input panel is open, the layout shrinks to
+              fit one screen, which temporarily hides the floppy slot row (close the
+              panel before swapping disks).
+            </p>
+            <img src="./help/virtual-pad-en.png" alt="Virtual Pad below the game screen on a phone in portrait orientation" />
+            <img src="./help/virtual-pad-landscape-en.png" alt="Virtual Pad on both sides of the game screen on a phone in landscape orientation" />
+            <p>
+              Tapping 🖱 opens the Virtual Trackpad strip. A
+              <strong>one-finger drag</strong> moves the cursor relatively, a
+              <strong>short tap</strong> is a left click, a
+              <strong>two-finger tap</strong> is a right click, and a
+              <strong>press-and-hold for about 450ms then drag</strong> performs a
+              left-button drag. The classic absolute-tracking touch on the emulator
+              canvas itself still works alongside it. The usual trackpad gesture for
+              scrolling (a two-finger drag) is not supported, since the PC-98 bus
+              mouse only has two buttons and nothing on the guest side would
+              receive it.
+            </p>
+            <img src="./help/virtual-trackpad-en.png" alt="Virtual Trackpad shown below the game screen on a phone" />
+          </div>
+        </section>
+
+        <!-- 5. テキスト送信 -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>テキスト送信（日本語入力）</h2>
+            <p>
+              「…」→「入力」の「テキスト送信」、または <strong>Shiftキーを2回連続</strong>
+              (0.5秒以内、間に他のキーを挟まない)で押すと、送信バーが開きます。
+            </p>
+            <img src="./help/paste-bar.png" alt="テキスト送信バー。入力欄・Enter付きチェック・送信/閉じるボタン" />
+            <p>
+              ホスト側（このページ）で入力したテキストを、ゲスト(エミュレータ内)へ
+              キーボード入力として送信します。「Enter付き」にチェックを入れると
+              末尾に改行を付けて送信します。
+            </p>
+            <p>
+              全角文字(Shift_JIS)は、FreeDOS(98) など対応しているゲスト環境では
+              そのまま届きます。NEC MS-DOS の標準的なコンソール入力では全角が
+              化けてしまう場合があります。その際はテキスト送信バー内の
+              「日本語入力を有効化」ボタンを押してください。同梱のツールFDに
+              入っている常駐ヘルパー(PASTE.COM)をゲストへ導入することで、
+              以降は全角も送れるようになります。<strong>DOSのコマンド待ち状態
+              （プロンプト）で実行してください。</strong>
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Sending text (typing Japanese)</h2>
+            <p>
+              Choose More (…) → Input → Send Text, or press <strong>Shift twice in a
+              row</strong> (within 0.5 seconds, no other key in between) to open
+              the send-text bar.
+            </p>
+            <img src="./help/paste-bar-en.png" alt="Text send bar with an input field, With Enter checkbox, and Send/Close buttons" />
+            <p>
+              Text you type on the host (this page) is sent to the guest (inside
+              the emulator) as keyboard input. Check "With Enter" to append a
+              newline at the end.
+            </p>
+            <p>
+              Full-width characters (Shift_JIS) reach the guest directly on
+              environments that support them, such as FreeDOS(98). On a plain NEC
+              MS-DOS console, full-width characters may come out garbled. In that
+              case, click the "Enable full-width input" button inside the text
+              send bar. It installs a resident helper (PASTE.COM) from the
+              bundled tool floppy into the guest, after which full-width text can
+              be sent. <strong>Run it while DOS is sitting at a command prompt.</strong>
+            </p>
+          </div>
+        </section>
+
+        <!-- 6. セーブと続きから遊ぶ -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>セーブと続きから遊ぶ</h2>
+            <p>
+              「…」→「ステート」の「ステート保存」「ステート復元」で、実行状態を
+              スロットへスナップショット保存・復元できます。
+            </p>
+            <p>
+              また、ディスクの変更内容はブラウザ内(IndexedDB)へ自動保存され、
+              次回同じイメージで開いたときに続きから再開します。ディスク
+              ライブラリでは、これまでに保存されたHDD/FDイメージの一覧から
+              起動・FD挿入・名前変更・削除ができます。
+            </p>
+            <p>
+              <code>.zip</code> / <code>.lzh</code> をドラッグ＆ドロップすると、
+              中のディスクイメージだけを取り出してライブラリへ登録します。
+              1枚だけならそのまま起動し、複数枚ならフォルダとしてまとめた上で
+              ライブラリを開くので、どのディスクで起動するか選べます。
+              フォルダ行をクリックすると中身が開きます。ディスクライブラリの
+              ダイアログを開いている状態でディスクイメージや <code>.zip</code> /
+              <code>.lzh</code> をドラッグ＆ドロップすると、スロットへはセット
+              せずライブラリへの登録だけを行います。
+            </p>
+            <p>
+              HDDイメージを持っていない場合は、HDDスロットの「ブランクHDDを作成」
+              ボタンで、FAT16でフォーマット済みの空HDD(40MB)をその場で作れます。
+              作成したHDDはライブラリへ保存され、そのままHDDスロットへセットされます。
+              ただしIPL(起動コード)は持たないためHDD単体では起動できません。
+              FDからDOSを起動したうえで、データ用ドライブとして使ってください
+              (FreeDOS(98)なら<code>C:</code>として認識されます)。
+            </p>
+            <p>
+              ディスク入れ替えは、FDDスロットの「ライブラリから挿入」ボタン
+              (ディスクが重なったアイコン)からも行えます。フォルダを選ぶと
+              その中のディスク一覧に切り替わるので、ライブラリを開かずに
+              2枚目・3枚目へ差し替えられます。名前は「名前変更」で自由に
+              付け替えられます(元のファイル名は保持されます)。
+            </p>
+            <img src="./help/library.png" alt="ディスクライブラリダイアログ。圧縮ファイル由来のフォルダを展開した一覧" />
+            <img src="./help/library-menu.png" alt="FDDスロットの「ライブラリから挿入」メニュー。フォルダ内のディスク一覧" />
+            <p>
+              「初期状態に戻す」ボタンを押すと、保存済みの進行状況を削除し、
+              配布元のイメージに戻せます（実行前に確認ダイアログが出ます）。
+            </p>
+            <h3>保存先はブラウザの中です（消える条件）</h3>
+            <p>
+              自動保存の保存先はサーバーではなく<strong>ブラウザ内のストレージ(IndexedDB)</strong>
+              です。これは Cookie と同じ扱いで、次のような場合に<strong>まとめて消えます</strong>。
+            </p>
+            <ul>
+              <li>ブラウザの「Cookie と他のサイトデータ」を削除したとき（「キャッシュされた画像とファイル」だけの削除では消えません）</li>
+              <li>「閲覧履歴データの削除」でサイトデータにチェックが入っていたとき</li>
+              <li>シークレット/プライベートウィンドウを閉じたとき</li>
+              <li>端末の空き容量が不足し、ブラウザが自動で整理したとき</li>
+              <li><strong>Safari で7日間このサイトを開かなかったとき</strong>（WebKit の仕様で、スクリプトから書き込めるストレージが一括削除されます）</li>
+            </ul>
+            <div class="note-box">
+              <strong>大事なデータは定期的にダウンロードしてください。</strong>
+              ディスクライブラリやドライブ行から、ゲストの書き込みを反映したディスクイメージを
+              手元のファイルとして書き出せます。ブラウザのストレージはいつ消えてもおかしくない
+              ものなので、遊び込んだディスクほど控えを持っておくと安心です。別のブラウザや
+              別の端末へも引き継がれないため、持ち出すときにも書き出したファイルを使います。
+            </div>
+          </div>
+          <div class="lang-en">
+            <h2>Saving and resuming</h2>
+            <p>
+              Use More (…) → State → Save State / Load State to snapshot
+              and restore the running state to/from a slot.
+            </p>
+            <p>
+              Disk changes are also auto-saved to your browser (IndexedDB), so
+              opening the same image again resumes from where you left off. The
+              Disk Library lets you boot, insert into an FD drive, rename, or
+              delete any previously saved HDD/FD image.
+            </p>
+            <p>
+              Dropping a <code>.zip</code> / <code>.lzh</code> archive extracts
+              just the disk images inside and adds them to the library. A single
+              disk boots right away; multiple disks are grouped into a folder and
+              the library opens so you can pick one. Click a folder row to expand
+              it. Dropping a disk image or <code>.zip</code> / <code>.lzh</code>
+              archive onto the Disk Library dialog itself only registers it in
+              the library, without setting it into any slot.
+            </p>
+            <p>
+              If you don't have a HDD image, the "Create blank HDD" button on the
+              HDD slot builds an empty FAT16-formatted 40MB disk on the spot. It is
+              saved to the library and set into the HDD slot right away. It carries
+              no IPL (boot code), so it cannot boot on its own — boot DOS from a
+              floppy and use it as a data drive (FreeDOS(98) picks it up as
+              <code>C:</code>).
+            </p>
+            <p>
+              You can also swap disks from the "Insert from library" button on
+              each FD slot. Selecting a folder switches the menu to the disks it
+              contains, so you can move to disk 2 or 3 without opening the
+              library. "Rename" changes the displayed name only; the original
+              file name is kept.
+            </p>
+            <img src="./help/library-en.png" alt="Disk Library dialog with an archive folder expanded" />
+            <img src="./help/library-menu-en.png" alt="The &quot;Insert from library&quot; menu on an FD slot, listing the disks in a folder" />
+            <p>
+              "Reset to Original" discards your saved progress and restores the
+              originally distributed image (a confirmation dialog appears first).
+            </p>
+            <h3>It is saved inside your browser (and when that disappears)</h3>
+            <p>
+              Autosave writes to <strong>your browser's storage (IndexedDB)</strong>, not to a
+              server. It behaves just like cookies, and it <strong>all disappears</strong> when:
+            </p>
+            <ul>
+              <li>You clear "Cookies and other site data" (clearing only "Cached images and files" does not remove it)</li>
+              <li>You clear browsing data with site data included</li>
+              <li>You close a private/incognito window</li>
+              <li>The device runs low on space and the browser reclaims storage</li>
+              <li><strong>You don't open this site in Safari for seven days</strong> (WebKit deletes all script-writable storage)</li>
+            </ul>
+            <div class="note-box">
+              <strong>Download anything you care about, regularly.</strong>
+              The disk library and the drive rows let you export a disk image — including the
+              guest's writes — as a file on your machine. Browser storage can vanish at any time,
+              so the more you have invested in a disk, the more worth keeping a copy. Storage is
+              never shared with another browser or device either, so use the exported file when you
+              want to take a disk elsewhere.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. ROM/素材ファイル登録 -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>ROM/素材ファイル登録</h2>
+            <p>
+              デスクトップ版NP2kaiで使っていたROM/素材ファイル
+              (<code>bios.rom</code>, <code>itf.rom</code>, <code>sound.rom</code>,
+              <code>font.rom</code>, <code>2608_*.wav</code> 等)をお持ちの場合、
+              「…」直下の「ROM登録」ダイアログから登録できます。ファイルは
+              ブラウザ内(IndexedDB)にのみ保存され、次回以降の起動時に自動で
+              組み込まれます。サーバーには送信されません。反映にはページの
+              再読み込みが必要です。
+            </p>
+            <p>
+              リズム音(<code>2608_*.wav</code>)は代替波形を同梱しているため、
+              <strong>登録しなくてもリズムパートは鳴ります</strong>。ただし同梱の音は
+              実機YM2608のリズム音そのものではなく代替音です。実機から吸い出した
+              本物の<code>2608_*.wav</code>を登録すると、そちらが優先して使われます。
+              登録できるのは<strong>モノラル・リニアPCM・16bit</strong>のWAVのみで、
+              条件を満たさないファイルは登録されず理由が表示されます(6本まとめて
+              無音になるのを防ぐためです)。
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Registering ROM/asset files</h2>
+            <p>
+              If you have ROM/asset files used by the desktop version of NP2kai
+              (<code>bios.rom</code>, <code>itf.rom</code>, <code>sound.rom</code>,
+              <code>font.rom</code>, <code>2608_*.wav</code>, etc.), you can
+              register them via More (…) → ROM Files. Files are saved
+              only in your browser (IndexedDB) and automatically loaded on future
+              starts. Nothing is sent to any server. Reload the page for changes
+              to take effect.
+            </p>
+            <p>
+              Rhythm sounds (<code>2608_*.wav</code>) already come with substitute
+              samples bundled in, so <strong>the rhythm part plays even if you
+              never register anything</strong>. Those bundled sounds are not the
+              real YM2608 rhythm samples, though — they are a substitute. If you
+              register genuine <code>2608_*.wav</code> files dumped from real
+              hardware, those take priority instead. Only <strong>mono, linear
+              PCM, 16-bit</strong> WAV files can be registered; files that don't
+              meet this will be rejected with a reason shown, rather than
+              registered (this prevents all six samples from going silent
+              together).
+            </p>
+          </div>
+        </section>
+
+        <!-- 8. AIから操作する -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>AIから操作する（MCP連携）</h2>
+            <p>
+              WebNP2 は、ローカルで動かす MCP サーバー(<code>webnp2-mcp</code>)経由で、
+              Claude Code などの AI エージェントから操作できます。MCP サーバーは
+              あなたのマシン上で動き、画面内容やディスクイメージが外部サーバーへ
+              送信されることはありません。
+            </p>
+            <p>
+              ブラウザで WebNP2 を <code>?bridge=1</code> パラメータ付きで開くと、
+              ページがローカルの MCP サーバーへ接続します。主なツールは以下の
+              とおりです。
+            </p>
+            <table class="btn-table">
+              <thead><tr><th>ツール名</th><th>概要</th></tr></thead>
+              <tbody>
+                <tr><td><code>screen_text</code></td><td>現在のテキスト画面(80x25)とカーソル位置を取得します。</td></tr>
+                <tr><td><code>type_text</code></td><td>ASCII文字列をキーボード入力として送ります。</td></tr>
+                <tr><td><code>paste_text</code></td><td>全角(Shift_JIS)対応でテキストを貼り付けます。</td></tr>
+                <tr><td><code>send_keys</code></td><td>"ENTER"や"CTRL+C"のようなキーコンボを送信します。</td></tr>
+                <tr><td><code>screenshot</code></td><td>画面のPNGスクリーンショットを取得します。</td></tr>
+                <tr><td><code>reset</code></td><td>エミュレータをリセットします。</td></tr>
+                <tr><td><code>save_state</code> / <code>load_state</code></td><td>実行状態のスナップショット保存/復元を行います。</td></tr>
+                <tr><td><code>insert_disk</code> / <code>eject_disk</code></td><td>FD1/FD2へのディスク挿入/排出を行います。</td></tr>
+              </tbody>
+            </table>
+            <p>
+              セットアップ手順の詳細は
+              <a href="https://github.com/uraraworks/WebNP2/tree/master/mcp" target="_blank" rel="noopener">mcp/README.md</a>
+              を参照してください。
+            </p>
+            <div class="note-box">
+              注意: 公開ページ(https)でMCPを使う場合は Chrome系ブラウザ か
+              Firefox を使ってください。Safari は https ページからの
+              <code>ws://</code> 接続をローカルホスト宛てでもブロックします。
+            </div>
+          </div>
+          <div class="lang-en">
+            <h2>Controlling WebNP2 from AI agents (MCP)</h2>
+            <p>
+              WebNP2 can be driven by AI agents such as Claude Code through a
+              local MCP server (<code>webnp2-mcp</code>). The MCP server always
+              runs on your own machine, and screen contents or disk images are
+              never sent to any external server.
+            </p>
+            <p>
+              Open WebNP2 with the <code>?bridge=1</code> parameter to have the
+              page connect to your local MCP server. Some of the main tools:
+            </p>
+            <table class="btn-table">
+              <thead><tr><th>Tool</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>screen_text</code></td><td>Gets the current text screen (80x25) and cursor position.</td></tr>
+                <tr><td><code>type_text</code></td><td>Sends an ASCII string as keyboard input.</td></tr>
+                <tr><td><code>paste_text</code></td><td>Pastes text with full-width (Shift_JIS) support.</td></tr>
+                <tr><td><code>send_keys</code></td><td>Sends a key combo such as "ENTER" or "CTRL+C".</td></tr>
+                <tr><td><code>screenshot</code></td><td>Captures a PNG screenshot of the screen.</td></tr>
+                <tr><td><code>reset</code></td><td>Resets the emulator.</td></tr>
+                <tr><td><code>save_state</code> / <code>load_state</code></td><td>Saves/restores a snapshot of the running state.</td></tr>
+                <tr><td><code>insert_disk</code> / <code>eject_disk</code></td><td>Inserts/ejects a disk from FD1/FD2.</td></tr>
+              </tbody>
+            </table>
+            <p>
+              See
+              <a href="https://github.com/uraraworks/WebNP2/tree/master/mcp" target="_blank" rel="noopener">mcp/README.md</a>
+              for full setup instructions.
+            </p>
+            <div class="note-box">
+              Note: with the public (https) page, use a Chromium-based browser
+              or Firefox for MCP — Safari blocks <code>ws://</code> connections
+              from https pages even to localhost.
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. トラブルシューティング -->
+        <section class="help-card">
+          <div class="lang-ja">
+            <h2>トラブルシューティング</h2>
+            <ul>
+              <li><strong>音が出ない</strong> — ブラウザの制限により、最初のクリック（または自動起動時はクリック/キー入力）まで音声はミュートです。</li>
+              <li><strong>URL指定イメージの取得に失敗する</strong> — <code>hdd</code>/<code>fd1</code>/<code>fd2</code>のURLはCORS(<code>Access-Control-Allow-Origin</code>)が有効な配信元である必要があります。Dropboxの共有リンクは「リンクをコピー」で得たURLをそのまま貼れます（<code>dl=1</code>への書き換えは不要で、アプリ側でホスト名を<code>dl.dropboxusercontent.com</code>へ置換して直接取得します。取得できない場合は中継サービスへ自動でフォールバックします）。Google Driveは中継サービス経由で自動的に再取得されます。OneDriveの共有リンクは仕様上ご利用いただけません。</li>
+              <li><strong>マウスカーソルがズレる</strong> — 「…」→「入力」→「マウス再同期」で基準を作り直せます。</li>
+              <li><strong>全角文字が化ける</strong> — 「テキスト送信（日本語入力）」の章を参照してください。「日本語入力を有効化」でゲスト側にヘルパーを導入すると解決します。</li>
+            </ul>
+          </div>
+          <div class="lang-en">
+            <h2>Troubleshooting</h2>
+            <ul>
+              <li><strong>No sound</strong> — Due to browser restrictions, audio stays muted until your first click (or, for auto-start, until your first click/key press).</li>
+              <li><strong>Fetching a URL-specified image fails</strong> — URLs given via <code>hdd</code>/<code>fd1</code>/<code>fd2</code> must be served from an origin with CORS (<code>Access-Control-Allow-Origin</code>) enabled. Dropbox share links can be pasted exactly as "Copy link" gives them to you (no need to change <code>dl=0</code> to <code>dl=1</code>: the app rewrites the hostname to <code>dl.dropboxusercontent.com</code> and fetches directly, falling back to the relay if that fails). Google Drive is automatically retried through a relay service. OneDrive share links can't be used.</li>
+              <li><strong>The mouse cursor drifts</strong> — Use More (…) → Input → Resync Mouse to re-establish the reference point.</li>
+              <li><strong>Full-width characters come out garbled</strong> — See the "Sending text (typing Japanese)" section above. Installing the guest helper via "Enable full-width input" fixes this.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="help-footer">
+      <span class="lang-ja">
+        <a href="./index.html">WebNP2 プレイヤーに戻る</a> /
+        <a href="./freedos.html">FreeDOS(98) の使い方</a> /
+        <a href="./about.html">WebNP2 の紹介ページ</a> /
+        <a href="https://github.com/uraraworks/WebNP2" target="_blank" rel="noopener">GitHubで見る</a>
+      </span>
+      <span class="lang-en">
+        <a href="./index.html">Back to the WebNP2 player</a> /
+        <a href="./freedos.html">Using FreeDOS(98)</a> /
+        <a href="./about.html">About WebNP2</a> /
+        <a href="https://github.com/uraraworks/WebNP2" target="_blank" rel="noopener">View on GitHub</a>
+      </span>
+    </footer>
+
+    <script>
+      (function () {
+        'use strict';
+
+        var STORAGE_KEY = 'webnp2.lang';
+
+        function readStoredLang() {
+          try {
+            var v = localStorage.getItem(STORAGE_KEY);
+            return v === 'ja' || v === 'en' ? v : null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        // 優先順位: URL ?lang= ＞ localStorage ＞ navigator.language(ja判定) ＞ 既定 'en'。
+        // src/ui/strings.ts の resolveLang() と同じロジック。
+        function resolveLang() {
+          var params = new URLSearchParams(location.search);
+          var fromUrl = params.get('lang');
+          if (fromUrl === 'ja' || fromUrl === 'en') return fromUrl;
+
+          var stored = readStoredLang();
+          if (stored) return stored;
+
+          if (navigator.language && navigator.language.toLowerCase().indexOf('ja') === 0) return 'ja';
+
+          return 'en';
+        }
+
+        function setLang(lang) {
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (e) {
+            // localStorageが使えない環境ではメモリ上の切替のみ有効。
+          }
+          document.body.setAttribute('data-lang', lang);
+          document.documentElement.setAttribute('lang', lang);
+          document.title = lang === 'ja' ? 'WebNP2 使い方' : 'WebNP2 Help';
+          var toggleBtn = document.getElementById('langToggleBtn');
+          if (toggleBtn) toggleBtn.textContent = lang === 'ja' ? 'EN' : '日本語';
+        }
+
+        var currentLang = resolveLang();
+        setLang(currentLang);
+
+        document.getElementById('langToggleBtn').addEventListener('click', function () {
+          currentLang = currentLang === 'ja' ? 'en' : 'ja';
+          setLang(currentLang);
+        });
+
+        // ツールバーのボタン一覧テーブルを生成する。
+        // アイコンのpath dは src/ui/player.ts の ICONS 定義と同一。
+        var BUTTONS = [
+          {
+            icon: 'M8 5v14 M16 5v14',
+            ja: 'ポーズ',
+            en: 'Pause',
+            descJa:
+              '実行を一時停止します。画面全体が暗くなり、中央に再生ボタンと「ポーズ中」の表示が出ます。' +
+              '誤クリック防止のため、再開は中央の再生ボタンからのみ行えます(暗くなった余白を押しても再開しません)。' +
+              'ポーズ状態はリロードには持ち越されません。',
+            descEn:
+              'Pauses execution. The whole screen dims and a play button with a "Paused" ' +
+              'label appears in the center. To prevent accidental taps, resuming only works ' +
+              'from that center play button (tapping the dimmed area does nothing). The ' +
+              'paused state does not carry over across a reload.',
+          },
+          {
+            icon: 'M3 12a9 9 0 1 0 3-6.7M3 4v5h5',
+            ja: 'マシンリセット',
+            en: 'Reset Machine',
+            descJa: 'エミュレータをコールドリセットして再起動します。',
+            descEn: 'Cold-resets the emulator to restart it.',
+          },
+          {
+            icon: 'M6 10V19H18V10 M12 3v6 M9 6l3 3 3-3',
+            ja: 'ステート保存',
+            en: 'Save State',
+            descJa: '「…」→「ステート」から、現在の実行状態(CPU/メモリ/画面等)をスロットへスナップショット保存します。',
+            descEn: 'Under More (…) → State, snapshots the current running state (CPU/memory/screen, etc.) into a slot.',
+          },
+          {
+            icon: 'M6 10V19H18V10 M12 9V3 M9 6l3-3 3 3',
+            ja: 'ステート復元',
+            en: 'Load State',
+            descJa: '「…」→「ステート」から、保存済みのスロットの実行状態を復元します。',
+            descEn: 'Under More (…) → State, restores the running state from a previously saved slot.',
+          },
+          {
+            icon: 'M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z M12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z',
+            ja: 'スクリーンショット',
+            en: 'Screenshot',
+            descJa: '現在の画面を、画面モードに応じた640x400または640x480のPNG画像として保存します。',
+            descEn: 'Saves the current screen as a 640x400 or 640x480 PNG image, matching the active video mode.',
+          },
+          {
+            icon: 'M5 12h.01 M12 12h.01 M19 12h.01',
+            ja: 'その他',
+            en: 'More',
+            descJa: '表示／入力／サウンド／ディスク／ステートのグループと、ROM登録／デバッガ／使い方／言語の直結行を開きます。',
+            descEn: 'Opens the Display, Input, Sound, Disk, and State groups plus direct rows for ROM Files, Debugger, Help, and Language.',
+          },
+          {
+            icon: 'M4 5h16v10H4z M9 19h6 M12 15v4',
+            ja: '表示モード',
+            en: 'Display Mode',
+            descJa:
+              '「…」→「表示」から、画面の縦横比を切り替えます。既定は実機ブラウン管と同じ4:3表示' +
+              '(縦のみ1.2倍、拡大方向限定のシャープ寄りバイリニア補正)で、「ドット等倍」に切り替える' +
+              'と補正なしの正方形ピクセル表示になります。行の右端に現在値が出ます。設定はlocalStorageに' +
+              '保存され、`?aspect=4:3|native` で起動時のみ上書きできます。',
+            descEn:
+              'Under More (…) → Display, switches the screen aspect mode. The default is a 4:3 ' +
+              'display matching a real CRT (1.2x vertical scale only, with an expand-only, ' +
+              'sharp-leaning bilinear correction); switching to "Pixel-perfect" shows the raw ' +
+              'square-pixel image with no correction. The current value is shown on the right. ' +
+              'The setting is saved to localStorage, and `?aspect=4:3|native` can override it at ' +
+              'startup only.',
+          },
+          {
+            icon: 'M12 3a6 6 0 0 1 6 6v6a6 6 0 0 1-12 0V9a6 6 0 0 1 6-6z M12 3v7 M12 7v3',
+            ja: 'マウスキャプチャ',
+            en: 'Capture Mouse',
+            descJa:
+              '「…」→「入力」から、画面をPC-98バスマウスとしてクリックロックします。画面の右ダブルクリックでも開始でき、Escキーで解除します。',
+            descEn:
+              'Under More (…) → Input, locks the pointer to the screen and emulates it as a PC-98 bus mouse. Right double-click the screen to start it too; press Esc to release.',
+          },
+          {
+            icon: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M9 12a3 3 0 1 0 6 0 3 3 0 1 0 -6 0',
+            ja: 'マウス再同期',
+            en: 'Resync Mouse',
+            descJa: '「…」→「入力」から、ホストのカーソル位置とゲスト側マウス位置の基準を作り直します。',
+            descEn: 'Under More (…) → Input, re-establishes the reference point when the host cursor and guest mouse position drift apart.',
+          },
+          {
+            icon: 'M3 7h18a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z M6 10h.01 M9 10h.01 M12 10h.01 M15 10h.01 M18 10h.01 M6 13h.01 M9 13h.01 M12 13h.01 M15 13h.01 M18 13h.01 M8 16h8',
+            ja: 'ソフトキーボード',
+            en: 'On-screen keyboard',
+            descJa:
+              'PC-98配列のソフトキーボードを開閉します(テンキーは既定非表示。キー内の「テンキー」で開閉)。表示中は直後に⌨／🎮／🖱切替チップが現れます。',
+            descEn:
+              'Opens/closes the PC-98 layout on-screen keyboard (the numeric keypad is hidden by default; toggle it with the “Tenkey” key). While a panel is open, a ⌨ / 🎮 / 🖱 switch appears beside it.',
+          },
+          {
+            icon: 'M6 8h12a4 4 0 0 1 4 4.5l-.8 4a2.5 2.5 0 0 1-4.4 1.1L15 15H9l-1.8 2.6a2.5 2.5 0 0 1-4.4-1.1l-.8-4A4 4 0 0 1 6 8z M7 12h3 M8.5 10.5v3 M16 11h.01 M18 13h.01',
+            ja: '入力設定',
+            en: 'Input Settings',
+            descJa: '「…」→「入力」から、ゲームパッド／キーボード／バーチャルパッドの割当プロファイルを編集します。',
+            descEn: 'Under More (…) → Input, edits assignment profiles for Gamepad, Keyboard, and Virtual Pad.',
+          },
+          {
+            icon: 'M4 5h16v11H8l-4 4V5z M7 9h10 M7 12h6',
+            ja: 'テキスト送信',
+            en: 'Send Text',
+            descJa:
+              '「…」→「入力」から、ホスト側のテキストをゲストへ送るバーを開きます。Shiftキー2回押しでも開けます。',
+            descEn:
+              'Under More (…) → Input, opens a bar for sending host text to the guest. It can also be opened by pressing Shift twice.',
+          },
+          {
+            icon: 'M4 9v6h4l5 4V5L8 9H4z M16.5 9a4 4 0 0 1 0 6 M19 7a7.5 7.5 0 0 1 0 10',
+            ja: 'ミュート',
+            en: 'Mute',
+            descJa:
+              '「…」→「サウンド」から、全体の音を消します(既定OFF)。AudioContext自体は止めず、' +
+              '出力段の音量だけを0にする方式です。行の右端に現在値(ON/OFF)が出て、クリックで' +
+              'トグルします。設定はlocalStorageに保存され、次回起動時にも復元されます。',
+            descEn:
+              'Under More (…) → Sound, silences all audio (off by default). It does not stop ' +
+              'the AudioContext itself — only the output-stage volume is set to zero. The row ' +
+              'shows the current value (ON/OFF) on the right; click to toggle. The setting is ' +
+              'saved to localStorage and restored on the next launch.',
+          },
+          {
+            icon: 'M5 4h11l3 3v13H5z M8 9h7v4H8z M14 15v3.2a1.8 1.8 0 1 1-1-1.6V13',
+            ja: 'FDDシーク音',
+            en: 'FDD Seek Sound',
+            descJa:
+              '「…」→「サウンド」から、FDDのシーク音のON/OFFを切り替えます(既定ON)。波形はエミュレータ' +
+              'コア(wasm)に埋め込まれているため、追加のサウンドファイルは不要です。設定はlocalStorage' +
+              'に保存され、次回起動時にも復元されます。',
+            descEn:
+              'Under More (…) → Sound, toggles the FDD seek sound (on by default). Its ' +
+              'waveform is embedded in the emulator core (wasm), so no extra sound file is ' +
+              'needed. The setting is saved to localStorage and restored on the next launch.',
+          },
+          {
+            icon: 'M7 7h10v10H7z M9 9h6v6H9z M7 4v3 M12 4v3 M17 4v3 M7 17v3 M12 17v3 M17 17v3 M4 7h3 M4 12h3 M4 17h3 M17 7h3 M17 12h3 M17 17h3',
+            ja: 'ROM登録',
+            en: 'ROM Files',
+            descJa:
+              '「…」の直結行から、NP2kaiのROM/素材ファイル(bios.rom等)を登録します。次回起動時から自動反映します(要ページ再読み込み)。',
+            descEn:
+              'From a direct row in More (…), registers NP2kai ROM/asset files (bios.rom, etc.). They are applied automatically on future starts (reload the page).',
+          },
+          {
+            icon: 'M4 16h13l3-3V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1z M4 20h13a3 3 0 0 0 3-3 M8 9h6v4H8z',
+            ja: 'ディスクライブラリ',
+            en: 'Disk Library',
+            descJa: '「…」→「ディスク」から、保存済みHDD/FDイメージの起動・FD挿入・名前変更・削除ができます。',
+            descEn: 'Under More (…) → Disk, opens saved HDD/FD images for booting, FD insertion, renaming, or deletion.',
+          },
+          {
+            icon: 'M3 12a9 9 0 1 0 3-6.7M3 4v5h5 M11 8.5l4 3.5-4 3.5v-7z',
+            ja: '初期状態に戻す',
+            en: 'Reset to Original',
+            descJa: '「…」→「ステート」から、保存済みの進行状況を削除して配布元の初期イメージへ戻します。',
+            descEn: 'Under More (…) → State, deletes saved progress and restores the originally distributed image.',
+          },
+          {
+            icon: 'M4 9V5a1 1 0 0 1 1-1h4 M15 4h4a1 1 0 0 1 1 1v4 M20 15v4a1 1 0 0 1-1 1h-4 M9 20H5a1 1 0 0 1-1-1v-4',
+            ja: 'フルスクリーン',
+            en: 'Fullscreen',
+            descJa: 'エミュレータ画面をフルスクリーン表示にします。',
+            descEn: 'Displays the emulator screen in fullscreen.',
+          },
+          {
+            icon: 'M3 8h13 M12 4l4 4-4 4 M21 16H8 M12 20l-4-4 4-4',
+            ja: 'ファイル転送',
+            en: 'File Transfer',
+            descJa:
+              '「…」→「ディスク」から2ペインダイアログを開き、このブラウザとディスクイメージの間でファイルをやり取りします。',
+            descEn:
+              'Under More (…) → Disk, opens a two-pane dialog for exchanging files between this browser and a disk image.',
+          },
+          {
+            icon: 'M4 5h16v14H4z M7 9l3 3-3 3 M12 15h5 M17 8h.01',
+            ja: 'デバッガ',
+            en: 'Debugger',
+            descJa: '「…」の直結行からCPUデバッガを開きます。',
+            descEn: 'Opens the CPU debugger from a direct row in More (…).',
+          },
+          {
+            icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M9.6 9.2a2.4 2.4 0 1 1 3.3 2.2c-.7.3-.9.8-.9 1.6 M12 16.8h.01',
+            ja: '使い方',
+            en: 'Help',
+            descJa: 'このページ(使い方ページ)を別タブで開きます。',
+            descEn: 'Opens this Help page in a new tab.',
+          },
+          {
+            icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M3 12h18 M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9 M12 3c-2.5 2.5-3.5 5.5-3.5 9s1 6.5 3.5 9',
+            ja: '言語',
+            en: 'Language',
+            descJa: '「…」の直結行に現在値(日本語／English)を表示し、押すと表示言語を切り替えます。',
+            descEn: 'Shows the current value (English/日本語) in a direct More (…) row; select it to switch the UI language.',
+          },
+        ];
+
+        function svgFor(pathD) {
+          return (
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+            ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="' +
+            pathD +
+            '"/></svg>'
+          );
+        }
+
+        function buildTable(tbodyId, langKey, descKey) {
+          var tbody = document.getElementById(tbodyId);
+          var html = '';
+          for (var i = 0; i < BUTTONS.length; i++) {
+            var b = BUTTONS[i];
+            html +=
+              '<tr>' +
+              '<td class="btn-icon-cell"><span class="fake-icon-btn">' +
+              svgFor(b.icon) +
+              '</span></td>' +
+              '<td>' +
+              b[langKey] +
+              '</td>' +
+              '<td>' +
+              b[descKey] +
+              '</td>' +
+              '</tr>';
+          }
+          tbody.innerHTML = html;
+        }
+
+        buildTable('btnTableJa', 'ja', 'descJa');
+        buildTable('btnTableEn', 'en', 'descEn');
+      })();
+    </script>
+  </body>
+</html>

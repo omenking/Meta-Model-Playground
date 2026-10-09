@@ -1,0 +1,9 @@
+# External files that are too large or inappropriate for Git.
+# See EXTERNAL-FILES.md in this folder for what is missing,
+# why, and how to obtain it. Do not force-add these paths.
+/Suika3-SDK-Full.zip
+
+# Upstream WebNP2 checkout (its own Git repository). The built
+# player is already committed under ../player/, so this source
+# checkout is only needed to rebuild it; see EXTERNAL-FILES.md.
+/webnp2-src/

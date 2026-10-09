@@ -1,0 +1,18 @@
+# Disk images are build outputs, not source. The .thd images are
+# fixed-size 41.5 MB each, which made this branch ~2.4 GB in Git.
+# They are regenerated from committed sources in one command:
+#   sh tools/rebuild_disks.sh
+# Chapter 2 images are generated per run by server.mjs.
+# See DISK-IMAGES.md for the full list and rebuild instructions.
+/disks-real/*.thd
+/disks-real/**/*.thd
+/disks-real/*.xdf
+/disks-real/**/*.xdf
+/disks-real/*.fdi
+/disks-real/**/*.fdi
+!/disks-real/.gitkeep
+
+# Server-side staging trees and stamped novels for generated
+# chapters (regenerated on every POST /api/chapter).
+/build/gen-*/
+/build/generated-*.novel
